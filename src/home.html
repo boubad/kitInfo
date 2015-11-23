@@ -1,20 +1,51 @@
 <template>
-  <section class="au-animate">
-    <h2>${heading}</h2>
-    <form role="form" submit.delegate="submit()" validate.bind="validation" >
-      <div class="form-group">
-        <label for="fn">First Name</label>
-        <input type="text" value.bind="firstName" class="form-control" id="fn" placeholder="first name">
-      </div>
-      <div class="form-group">
-        <label for="ln">Last Name</label>
-        <input type="text" value.bind="lastName" class="form-control" id="ln" placeholder="last name">
-      </div>
-      <div class="form-group">
-        <label>Full Name</label>
-        <p class="help-block">${fullName | upper}</p>
-      </div>
-      <button type="submit" class="btn btn-default">Submit</button>
-    </form>
-  </section>
+  <div if.bind="is_notconnected">
+    <table>
+        <tr>
+          <td>&nbsp;</td>
+          <td>&nbsp;</td>
+          <td>&nbsp;</td>
+          <td>&nbsp;</td>
+          <td>&nbsp;</td>
+          <td style="text-align:center">
+            <div if.bind="has_error_message">
+              <h3 class="text-danger">${error_message}</h3>
+            </div>
+            <table>
+              <tr>
+                <td>
+                  <img src.bind="login_image"></img>
+                </td>
+                <td>&nbsp;&nbsp;</td>
+                <td>
+                  <form role="form">
+                    <div class="form-group">
+                      <label class="control-label">Identifiant</label>
+                      <input id="username" type="text" class="form-control" value.bind="username" placeholder="Identifiant utilisateur"
+                      />
+                    </div>
+                    <div class="form-group">
+                      <label class="control-label">Mot de passe</label>
+                      <input id="password" type="password" class="form-control" value.bind="password" placeholder="Mot de passe"
+                      />
+                    </div>
+                    <div class="btn-group">
+                      <a class="btn btn-primary" click.delegate="perform_login()" href="#" show.bind="can_connect">
+                        <i class="fa fa-user"></i>Connecter
+                      </a>
+                    </div>
+                  </form>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+    </table>
+  </div>
+  <div if.bind="is_connected">
+		<connect-bar info.bind="userInfo"></connect-bar>
+    <div if.bind="has_splash_image">
+      <img src.bind="splash_image"></img>
+    </div>
+  </div>
 </template>
