@@ -12,14 +12,14 @@ export class Groupe extends DepartementSigleNamedItem implements IGroupe {
 	constructor(oMap?: any) {
 		super(oMap);
 		if ((oMap !== undefined) && (oMap !== null)) {
-			if (oMap.parent_id !== undefined) {
-				this._parent_id = oMap.parent_id;
+			if (oMap.parentid !== undefined) {
+				this._parent_id = oMap.parentid;
 			}
 			if (oMap.genre !== undefined) {
 				this._genre = oMap.genre;
 			}
-			if ((oMap.children_ids !== undefined) && (oMap.children_ids !== null)) {
-				this._children = oMap.children_ids;
+			if ((oMap.childrenids !== undefined) && (oMap.childrenids !== null)) {
+				this._children = oMap.childrenids;
 			}
 		}// oMap
 	}

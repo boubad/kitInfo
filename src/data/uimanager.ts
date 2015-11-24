@@ -13,7 +13,7 @@ export class UIManager implements IUIManager {
         if (HAS_URL && (blob !== undefined) && (blob !== null)) {
             try {
                 sRet = window.URL.createObjectURL(blob);
-            } catch (e) { 
+            } catch (e) {
 				console.log(e.toString());
 			}
         }
@@ -26,11 +26,17 @@ export class UIManager implements IUIManager {
             } catch (e) { }
         }
     }// revokeUrl
-    public confirm(s: string): boolean {
+    public confirm(s: string): Promise<boolean> {
         if (HAS_WINDOW) {
-            return window.confirm(s);
+            return Promise.resolve(window.confirm(s));
         } else {
-            return true;
+            return Promise.resolve(true);
         }
+    }// confirm
+	public info(s: string): Promise<any> {
+        if (HAS_WINDOW) {
+			window.alert(s);
+        }
+		return Promise.resolve(true);
     }// confirm
 }// class UIManager

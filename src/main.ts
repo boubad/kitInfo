@@ -7,6 +7,7 @@ export function configure(aurelia: Aurelia) {
     .developmentLogging()
 		.plugin('aurelia-animator-css')
     .plugin('aurelia-validation', (config) => { config.useLocale('fr-FR') })
+		.plugin('aurelia-dialog',(settings)=>{settings.lock = true})
 		.feature('./src/resources');
 
   //Uncomment the line below to enable animation.

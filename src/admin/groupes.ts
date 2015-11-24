@@ -1,13 +1,12 @@
-//semestres.ts
+//groupes.ts
 //
 import {InfoUserInfo} from '../infouserinfo';
-import {SemestresModel} from '../data/semestresmodel';
+import {GroupesModel} from '../data/groupesmodel';
 //
-export class Semestres extends SemestresModel {
-	//
+export class Groupes extends GroupesModel {
 	static inject() { return [InfoUserInfo]; }
 	//
     constructor(info: InfoUserInfo) {
         super(info);
     }// constructor
-}// class SEmestres
+}// class Unites

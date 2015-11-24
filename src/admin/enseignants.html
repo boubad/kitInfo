@@ -16,6 +16,11 @@
 					<depart-bar></depart-bar>
 				</td>
 			</tr>
+			<tr if.bind="isEditable">
+				<td style="text-align:center">
+					<import-bar></import-bar>
+				</td>
+			</tr>
 			<tr if.bind="canShowForm">
 				<td style="vertical-align:top">
 					<elements-bar></elements-bar>
@@ -24,8 +29,7 @@
 				<td style="vertical-align:top">
 					<form role="form">
 						<avatar-bar></avatar-bar>
-						<interval-bar></interval-bar>
-						<siglename-bar></siglename-bar>
+						<person-bar></person-bar>
 						<command-bar></command-bar>
 					</form>
 				</td>

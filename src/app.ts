@@ -1,6 +1,7 @@
 // app.ts
 ///
-import {UserInfo} from './data/userinfo';
+import {InfoUserInfo} from './infouserinfo';
+import {BaseModel} from './data/basemodel';
 import {Router, RouterConfiguration} from 'aurelia-router';
 import {ETUDDETAIL_ROUTE, GRPEVTDETAIL_ROUTE, ETUDEVTDETAIL_ROUTE,
 ETUDNOTES_ROUTE} from './data/infoconstants';
@@ -21,14 +22,13 @@ class AureliaInfoRouter implements IInfoRouter {
 	}// navigate_to
 }// class AureliaInfoRouter
 //
-export class App  {
+export class App  extends BaseModel {
     public router: Router;
-	private userinfo:UserInfo;
 	//
-	static inject() { return [UserInfo]; }
+	static inject() { return [InfoUserInfo]; }
     //
-    constructor(user: UserInfo) {
-		this.userinfo = user;
+    constructor(user: InfoUserInfo) {
+		super(user);
 		this.router = null;
     }
     //
@@ -38,9 +38,9 @@ export class App  {
             { route: ['', 'home'], name: 'home', moduleId: './home', nav: true, title: 'Accueil' },
 			{ route: 'consult', name: 'consult', moduleId: './consult/consult-router', nav: true, title: 'Consultation' },
 			{ route: 'profil', name: 'profil', moduleId: './profil', nav: true, title: 'Profil' },
+			{ route: 'synchro', name: 'synchro', moduleId: './synchro-view', nav: true, title: 'Synchro' },
 			{ route: 'admin', name: 'admin', moduleId: './admin/admin-router', nav: true, title: 'Admin' }
 			/*
-			{ route: 'synchro', name: 'synchro', moduleId: './synchro-view', nav: true, title: 'Synchro' }
 			{ route: 'etudnotes/:id', name: 'etudnotes', moduleId: './consult/etudiant-notes', nav: false },
 			{ route: 'etudevt/:id', name: ETUDEVTDETAIL_ROUTE, moduleId: './consult/etudeventdetail', nav: false },
 			{ route: 'etud/:id', name: ETUDDETAIL_ROUTE, moduleId: './consult/etudiants-sumary', nav: false },
@@ -49,8 +49,9 @@ export class App  {
 			*/
         ]);
         this.router = router;
-		if ((this.userinfo !== undefined) && (this.userinfo !== null)) {
-			this.userinfo.router = new AureliaInfoRouter(router);
+		let userinfo = this.userInfo;
+		if ((userinfo !== undefined) && (userinfo !== null)) {
+			userinfo.router = new AureliaInfoRouter(router);
 		}
     }
 }

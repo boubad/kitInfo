@@ -75,23 +75,33 @@ export class BaseEditViewModel<T extends IBaseItem> extends BaseConsultViewModel
 		if ((id === null) || (avatarid === null)) {
 			return;
 		}
-		if (this.confirm('Voulez-vous vraiment supprimer cet avatar?')) {
-			let service = this.dataService;
-			this.clear_error();
-			return service.remove_attachment(id, avatarid).then((r) => {
+		let service = this.dataService;
+		return this.confirm('Voulez-vous vraiment supprimer cet avatar?').then((bRet) => {
+			if (bRet) {
+				this.clear_error();
+				return service.remove_attachment(id, avatarid);
+			} else {
+				return Promise.resolve(false);
+			}
+		}).then((b) => {
+			if (b) {
 				if (p.url !== null) {
 					this.uiManager.revokeUrl(p.url);
 					p.url = null;
 				}
 				p.avatarid = null;
 				return service.save_item(p);
-			}).then((x) => {
+			} else {
+				return Promise.resolve(false);
+			}
+		}).then((x) => {
+			if (x) {
 				this.fileDesc.clear();
-				this.info_message = 'Avatar supprimÃ©.';
-			}).catch((err) => {
-				this.set_error(err);
-			});
-		}
+				this.info_message = 'Avatar supprimé.';
+			}
+		}).catch((err) => {
+			this.set_error(err);
+		});
 	}
 	public saveAvatar(): any {
 		let f = this.fileDesc;
@@ -203,11 +213,10 @@ export class BaseEditViewModel<T extends IBaseItem> extends BaseConsultViewModel
 		if ((item.id === null) || (item.rev === null)) {
 			return Promise.resolve(false);
 		}
-		if (!this.confirm('Voulez-vous vraiment supprimer ' + item.id + '?')) {
-			return Promise.resolve(false);
-		}
-		this.clear_error();
-		return this.dataService.remove_item(item).then((r) => {
+		return this.confirm('Voulez-vous vraiment supprimer ' + item.id + '?').then((b) => {
+			this.clear_error();
+			return this.dataService.remove_item(item);
+		}).then((r) => {
 			this.refreshAll();
 			return true;
 		}).catch((err) => {

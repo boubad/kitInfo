@@ -1,8 +1,8 @@
 // importcsv.ts
 import { ITransformArray, IBaseItem, IItemFactory} from 'infodata';
-import {Papa} from 'papaparse';
+//import {Papa} from 'papaparse';
 //
-//declare var Papa:any;
+declare var Papa:any;
 //import Papa = require('papaparse');
 //
 export class CSVImporter implements ITransformArray {

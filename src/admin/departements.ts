@@ -1,13 +1,13 @@
 //departements.ts
 //
-import {UserInfo} from '../data/userinfo';
+import {InfoUserInfo} from '../infouserinfo';
 import {DepartementsModel} from '../data/departementsmodel';
 //
 export class Departements extends DepartementsModel {
 	//
-	static inject() { return [UserInfo]; }
+	static inject() { return [InfoUserInfo]; }
 	//
-    constructor(info: UserInfo) {
+    constructor(info: InfoUserInfo) {
         super(info);
     }// constructor
 }// class Departements

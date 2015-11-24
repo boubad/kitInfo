@@ -1,14 +1,14 @@
 //profil.ts
 //
-import {UserInfo} from './data/userinfo';
+import {InfoUserInfo} from './infouserinfo';
 import {ProfilModel} from './data/profilmodel';
 //
 //
 export class Profil extends ProfilModel {
 	//
-	public static inject(){return [UserInfo];}
+	public static inject(){return [InfoUserInfo];}
   //
-  constructor(info: UserInfo) {
+  constructor(info: InfoUserInfo) {
 		super(info);
   }
 }// class Profil

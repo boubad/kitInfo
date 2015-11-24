@@ -2,16 +2,16 @@
 ///
 import {Router} from 'aurelia-router';
 import {BaseModel} from '../data/basemodel';
-import {UserInfo} from '../data/userinfo';
+import {InfoUserInfo} from '../infouserinfo';
 //
 export class ConsultRouter extends BaseModel {
 	//
-	public static inject() { return [UserInfo]; }
+	public static inject() { return [InfoUserInfo]; }
 	//
 	public heading: string = 'Consultation';
 	public router: Router;
 	//
-	constructor(info: UserInfo) {
+	constructor(info: InfoUserInfo) {
 		super(info);
 		this.title = 'Consultation';
 	}// constructor

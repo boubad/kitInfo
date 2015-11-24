@@ -5,7 +5,8 @@ declare module 'infodata' {
     export interface IUIManager {
         createUrl: (data: Blob) => string;
         revokeUrl: (s: string) => void;
-        confirm: (question: string) => boolean;
+        confirm: (question: string) =>Promise<boolean>;
+		info: (text: string) =>Promise<any>;
     }// interface IUIManager
     export interface IObjectStore {
         get_value: (key: string) => string;

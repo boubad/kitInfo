@@ -156,11 +156,18 @@ export class BaseModel extends InfoElement {
             return null;
         }
     }
-	protected confirm(s: string): boolean {
+	protected confirm(s: string): Promise<boolean> {
         if (this.uiManager !== null) {
             return this.uiManager.confirm(s);
         } else {
-            return false;
+            return Promise.resolve(false);
+        }
+    }
+	protected info(s: string): Promise<any> {
+        if (this.uiManager !== null) {
+            return this.uiManager.info(s);
+        } else {
+            return Promise.resolve(false);
         }
     }
 	//

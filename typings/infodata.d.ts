@@ -5,15 +5,15 @@ declare module 'infodata' {
     //
     export interface IInfoElement {
 		id: string;
-		has_id: boolean;
-		text: string;
-		toString: () => string;
-		sort_func: (p1: IInfoElement, p2: IInfoElement) => number;
+		has_id?: boolean;
+		text?: string;
+		toString?: () => string;
+		sort_func?: (p1: IInfoElement, p2: IInfoElement) => number;
     } // interface IInfoElement
     //
     export interface IElementDesc extends IInfoElement {
 		display?: string;
-		selected: boolean;
+		selected?: boolean;
         avatarid?: string;
         url?: string;
         description?: string;

@@ -1,13 +1,13 @@
-//semestres.ts
+//administrators.ts
 //
 import {InfoUserInfo} from '../infouserinfo';
-import {SemestresModel} from '../data/semestresmodel';
+import {AdministratorsModel} from '../data/administratorsmodel';
 //
-export class Semestres extends SemestresModel {
+export class Administrators extends AdministratorsModel {
 	//
 	static inject() { return [InfoUserInfo]; }
 	//
     constructor(info: InfoUserInfo) {
         super(info);
     }// constructor
-}// class SEmestres
+}// class DepartementModel

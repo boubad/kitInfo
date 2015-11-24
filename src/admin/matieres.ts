@@ -1,13 +1,13 @@
-//semestres.ts
+//matieres.ts
 //
 import {InfoUserInfo} from '../infouserinfo';
-import {SemestresModel} from '../data/semestresmodel';
+import {MatieresModel} from '../data/matieresmodel';
 //
-export class Semestres extends SemestresModel {
+export class Matieres extends MatieresModel {
 	//
 	static inject() { return [InfoUserInfo]; }
 	//
     constructor(info: InfoUserInfo) {
         super(info);
     }// constructor
-}// class SEmestres
+}// class MatieresModel

@@ -1,13 +1,13 @@
 //annees.ts
 //
-import {UserInfo} from '../data/userinfo';
+import {InfoUserInfo} from '../infouserinfo';
 import {AnneesModel} from '../data/anneesmodel';
 //
 export class Annees extends AnneesModel {
 	//
-	static inject() { return [UserInfo]; }
+	static inject() { return [InfoUserInfo]; }
 	//
-    constructor(info: UserInfo) {
+    constructor(info: InfoUserInfo) {
         super(info);
     }// constructor
 }// class Annees

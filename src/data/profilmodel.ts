@@ -5,7 +5,7 @@ import {BaseModel} from './basemodel';
 import {FileDesc} from './filedesc';
 import {IDataService, IPerson, IElementDesc, IFileDesc} from 'infodata';
 //
-const EMPTY_STRING:string='';
+const EMPTY_STRING: string = '';
 //
 export class ProfilModel extends BaseModel {
 	//
@@ -156,7 +156,7 @@ export class ProfilModel extends BaseModel {
 		return this.fileDesc.is_storeable;
 	}
 	public fileChanged(event: any): any {
-		this.fileDesc.changed(event,true);
+		this.fileDesc.changed(event, true);
 	}// fileChanged
 	public remove(): any {
 		let pPers = this.userInfo.person;
@@ -168,17 +168,18 @@ export class ProfilModel extends BaseModel {
 		if ((id === null) || (avatarid === null)) {
 			return;
 		}
-		if (this.confirm('Voulez-vous vraiment supprimer cet avatar?')) {
-			return this.dataService.remove_attachment(id, avatarid).then((r) => {
+		this.confirm('Voulez-vous vraiment supprimer cet avatar?').then((bRet) => {
+			if (bRet) {
 				this.fileDesc.clear();
 				if (pPers.url !== null) {
 					this.uiManager.revokeUrl(pPers.url);
 					pPers.url = null;
 				}
-			}, (err) => {
-				this.set_error(err);
-			});
-		}
+			}
+		}).catch((e)=>{
+			this.set_error(e);
+			return false;
+		})
 	}
 	public save(): any {
 		let pPers = this.userInfo.person;

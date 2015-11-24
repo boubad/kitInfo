@@ -570,7 +570,7 @@ declare module 'aurelia-validation/validation/validation' {
 	     * @param subject The subject to validate
 	     * @returns {ValidationGroup} A ValidationGroup that encapsulates the validation rules and current validation state for this subject
 	     */
-	    on(subject: any, configCallback: any): ValidationGroup;
+	    on(subject: any, configCallback?: any): ValidationGroup;
 	    onBreezeEntity(breezeEntity: any, configCallback: any): ValidationGroup;
 	}
 

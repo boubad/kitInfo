@@ -25,8 +25,11 @@ export class UserInfo extends InfoElement {
     private _matiere: IMatiere;
     private _groupe: IGroupe;
     //
-	constructor() {
+	constructor(man?:IUIManager) {
 		super();
+		if ((man !== undefined) && (man !== null)){
+			this._uimanager = man;
+		}
 	}// constructor
 	public get router(): IInfoRouter {
 		return (this._router !== undefined) ? this._router : null;
