@@ -14,6 +14,9 @@ export class Matiere extends SigleNamedItem {
     constructor(oMap?: any) {
         super(oMap);
         if ((oMap !== undefined) && (oMap !== null)) {
+			if (oMap.uniteid !== undefined){
+				this.uniteid = oMap.uniteid;
+			}
             if (oMap.coefficient !== undefined) {
                 this.coefficient = oMap.coefficient;
             }

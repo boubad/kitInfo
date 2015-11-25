@@ -1,10 +1,10 @@
 // synchromodel.ts
 import {UserInfo} from './userinfo';
 import {SynchroManager} from './syncmanager';
-import {BaseModel} from './basemodel';
+import {BaseView} from './baseview';
 //
 //
-export class SynchroModel extends BaseModel {
+export class SynchroModel extends BaseView {
 	//
 	private _manager: SynchroManager;
 	private _candidateServer: string;

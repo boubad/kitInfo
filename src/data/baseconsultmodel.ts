@@ -1,26 +1,32 @@
 //baseconsultmodel.ts
 //
 import {UserInfo} from './userinfo';
-import {BaseModel} from './basemodel';
+import {BaseView} from './baseview';
 import {FileDesc} from './filedesc';
 import {IBaseItem, IFileDesc} from 'infodata';
 //
-export class BaseConsultViewModel<T extends IBaseItem> extends BaseModel {
+export class BaseConsultViewModel<T extends IBaseItem> extends BaseView {
 	//
 	private _items: T[];
 	private _current_item: T;
 
-	protected fileDesc: IFileDesc = null;
-	private _item_model: T = null;
-	private _page_size: number = 16;
-	private _current_page: number = 0;
-	private _pages_count: number = 0;
-	private _allIds: string[] = [];
-	private _pageStatus: string = null;
+	protected fileDesc: IFileDesc;
+	private _item_model: T;
+	private _page_size: number;
+	private _current_page: number;
+	private _pages_count: number;
+	private _allIds: string[];
+	private _pageStatus: string;
+	private _in_activate: boolean;
 	//
 	constructor(info: UserInfo) {
 		super(info);
+		this._page_size = 16;
+		this._current_page = 0;
+		this._pages_count = 0;
 		this.fileDesc = new FileDesc();
+		this._allIds = [];
+		this._in_activate = false;
 	}// constructor
 	
 	protected create_item(): T {
@@ -29,6 +35,13 @@ export class BaseConsultViewModel<T extends IBaseItem> extends BaseModel {
 	protected prepare_model(): any {
 		return {};
 	}// prepare_model
+	protected get in_activate(): boolean {
+		return ((this._in_activate !== undefined) && (this._in_activate !== null)) ?
+			this._in_activate : false;
+	}
+	protected set in_activate(s: boolean) {
+		this._in_activate = s;
+	}
 	public get items(): T[] {
 		return ((this._items !== undefined) && (this._items !== null)) ? this._items : [];
 	}
@@ -99,7 +112,7 @@ export class BaseConsultViewModel<T extends IBaseItem> extends BaseModel {
 			return Promise.resolve(true);
 		}
 		let nbItems = this.allIds.length;
-		if (nbItems < 1){
+		if (nbItems < 1) {
 			return Promise.resolve(true);
 		}
 		let nc = this.itemsPerPage;
@@ -198,11 +211,9 @@ export class BaseConsultViewModel<T extends IBaseItem> extends BaseModel {
 	public get canPrevPage(): boolean {
 		return (this._current_page > 0);
 	}
-	public set canPrevPage(s: boolean) { }
 	public get canNextPage(): boolean {
 		return ((this._current_page + 1) < this._pages_count);
 	}
-	public set canNextPage(s: boolean) { }
 	public firstPage(): void {
 		if (this.currentPage > 1) {
 			this.currentPage = 1;
@@ -227,22 +238,19 @@ export class BaseConsultViewModel<T extends IBaseItem> extends BaseModel {
 		}
 	}
 	protected perform_activate(): Promise<any> {
-		if (this._item_model === null) {
-			this._item_model = this.create_item();
-		}
-		if (this._current_item === null) {
-			this._current_item = this.create_item();
-		}
-		if (this.fileDesc === null) {
-			this.fileDesc = new FileDesc();
-		} else {
-			this.fileDesc.clear();
-		}
-		return Promise.resolve(true);
+		return super.perform_activate().then((r) => {
+			if (this._item_model === null) {
+				this._item_model = this.create_item();
+			}
+			if (this._current_item === null) {
+				this._current_item = this.create_item();
+			}
+			if (this.fileDesc === null) {
+				this.fileDesc = new FileDesc();
+			} else {
+				this.fileDesc.clear();
+			}
+		})
 	}
-	public activate(params?: any, config?: any, instruction?: any): any {
-		return this.perform_activate().then((x) => {
-			return this.refreshAll();
-		});
-	}// activate
+	
 }// class BaseConsultViewModel

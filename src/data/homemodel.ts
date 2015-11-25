@@ -1,6 +1,6 @@
 //homemodel.ts
 import {IPerson,IDocPersist} from 'infodata';
-import {BaseModel} from './basemodel';
+import {BaseView} from './baseview';
 import {UserInfo} from './userinfo';
 import {ADMIN_ROUTE, CONSULT_ROUTE} from './infoconstants';
 //
@@ -12,7 +12,7 @@ const INDEXED_FIELDS:string[] = ["_id","type","status","dossier","sexe","birthDa
 "genre","name","startDate","endDate","eventDate","note"];
 //
 
-export class HomeModel extends BaseModel {
+export class HomeModel extends BaseView {
 	private _username: string;
 	private _password: string;
 	private _splashImage: string;

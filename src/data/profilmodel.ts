@@ -1,13 +1,13 @@
 //profilmodel.ts
 //
 import {UserInfo} from './userinfo';
-import {BaseModel} from './basemodel';
+import {BaseView} from './baseview';
 import {FileDesc} from './filedesc';
 import {IDataService, IPerson, IElementDesc, IFileDesc} from 'infodata';
 //
 const EMPTY_STRING: string = '';
 //
-export class ProfilModel extends BaseModel {
+export class ProfilModel extends BaseView {
 	//
 	private fileDesc: IFileDesc;
 	//

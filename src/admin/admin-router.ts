@@ -19,6 +19,9 @@ export class AdminRouter extends BaseModel {
 	public configureRouter(config, router: Router) {
 		config.map([
 			{ route: ['', 'home'], moduleId: '../home', nav: true, title: 'Accueil' },
+			{ route: 'etudaffectations', moduleId: './etudaffectations', nav: true, title: 'Affectations Etudiants' },
+			{ route: 'profaffectations', moduleId: './profaffectations', nav: true, title: 'Affectations Enseignants' },
+			{ route: 'importetuds', moduleId: './import-etuds', nav: true, title: 'Import Etudiants' },
 			{ route: 'semestres', moduleId: './semestres', nav: true, title: 'Semestres' },
 			{ route: 'annees', moduleId: './annees', nav: true, title: 'Années' },
 			{ route: 'etudiants', moduleId: './etudiants', nav: true, title: 'Etudiants' },
@@ -28,14 +31,6 @@ export class AdminRouter extends BaseModel {
 			{ route: 'groupes', moduleId: './groupes', nav: true, title: 'Groupes' },
 			{ route: 'administrators', moduleId: './administrators', nav: true, title: 'Opérateurs' },
 			{ route: 'departements', moduleId: './departements', nav: true, title: 'Départements' }
-			/*
-			{ route: 'etudaffectations', moduleId: './etudaffectations', nav: true, title: 'Affectations Etudiants' },
-			{ route: 'importetuds', moduleId: './import-etuds', nav: true, title: 'Import Etudiants' },
-			{ route: 'profaffectations', moduleId: './profaffectations', nav: true, title: 'Affectations Enseignants' },
-			*/
-			/*
-			{ route: 'etud/:id', name: 'etud', moduleId:'../consult/etudiants-sumary', nav: false }
-			*/
 		]);
 		this.router = router;
 	}

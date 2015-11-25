@@ -54,6 +54,10 @@ export class PersonViewModel<T extends IDepartementPerson> extends BaseEditViewM
                 if ((x.departementids === undefined) || (x.departementids === null)) {
                     x.departementids = [];
                 }
+				let ps = x.password;
+				if ((ps === undefined) || (ps === null)){
+					x.reset_password();
+				}
                 this.add_id_to_array(x.departementids, depid);
                 if (x.is_storeable()) {
                     pp.push(x);
@@ -267,9 +271,10 @@ export class PersonViewModel<T extends IDepartementPerson> extends BaseEditViewM
             }
         }
 		pPers.id = pPers.create_id();
-		if (pPers.password === null) {
-            pPers.reset_password();
-        }
+		let ps = pPers.password;
+		if ((ps === undefined) || (ps === null)){
+			pPers.reset_password();
+		}
 		item.departementid = this.departementid;
 		item.departementName = this.departementName;
 		item.personid = pPers.id;

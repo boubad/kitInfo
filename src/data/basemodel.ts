@@ -183,8 +183,11 @@ export class BaseModel extends InfoElement {
 	public get itemFactory(): IItemFactory {
 		return this.loginInfo.itemfactory;
 	}
-	public get groupes(): IGroupe[] {
+	protected get_groupes(): IGroupe[] {
 		return (this.userInfo !== null) ? this.userInfo.groupes : [];
+	}
+	public get groupes(): IGroupe[] {
+		return this.get_groupes();
 	}
 	public get matieres(): IMatiere[] {
 		return (this.userInfo !== null) ? this.userInfo.matieres : [];
@@ -206,9 +209,6 @@ export class BaseModel extends InfoElement {
 		return (this.loginInfo !== null) ? this.loginInfo.departement : null;
     }
     public set departement(s: IDepartement) {
-		if (this.is_in_departement_change) {
-			return;
-		}
 		this._bInDep = true;
 		this._anneeMinDate = null;
 		this._anneeMaxDate = null;
@@ -225,33 +225,13 @@ export class BaseModel extends InfoElement {
 				this._semestreMinDate = (this.semestre.startDate !== null) ? this.semestre.startDate.toISOString().substr(0, 10) : null;
 				this._semestreMaxDate = (this.semestre.endDate !== null) ? this.semestre.endDate.toISOString().substr(0, 10) : null;
 			}
-			return this.userInfo.post_update_annee();
-		}).then((b2) => {
-			return this.userInfo.post_update_unite();
-		}).then((vc) => {
-			return this.post_update_departement();
-		}).then((xx) => {
-			return this.post_update_annee();
-		}).then((bv) => {
-			return this.post_update_unite();
-		}).then((bvx) => {
-			return this.post_update_groupe();
-		}).then((by) => {
-			return this.post_update_semestre();
-		}).then((bvz) => {
-			return this.post_update_matiere();
-		}).then((hh) => {
 			this._bInDep = false;
-		})
-	}
+		});
     //
     public get semestre(): ISemestre {
 		return (this.userInfo !== null) ? this.userInfo.semestre : null;
     }
     public set semestre(s: ISemestre) {
-		if (this.is_in_semestre_change) {
-			return;
-		}
 		if (this.userInfo !== null) {
 			this.userInfo.semestre = s;
 			this._bInSemestre = true;
@@ -270,9 +250,6 @@ export class BaseModel extends InfoElement {
 		return (this.userInfo !== null) ? this.userInfo.groupe : null;
     }
     public set groupe(s: IGroupe) {
-		if (this.is_in_groupe_change) {
-			return;
-		}
 		if (this.userInfo !== null) {
 			this.userInfo.groupe = s;
 			this._bInGroupe = true;
@@ -286,9 +263,6 @@ export class BaseModel extends InfoElement {
 		return (this.userInfo !== null) ? this.userInfo.matiere : null;
     }
     public set matiere(s: IMatiere) {
-		if (this.is_in_matiere_change) {
-			return;
-		}
 		if (this.userInfo !== null) {
 			this.userInfo.matiere = s;
 			this._bInMatiere = true;
@@ -301,9 +275,6 @@ export class BaseModel extends InfoElement {
         return (this.userInfo !== null) ? this.userInfo.annee : null;
     }
     public set annee(s: IAnnee) {
-		if (this.is_in_annee_change) {
-			return;
-		}
 		if (this.userInfo !== null) {
 			this.userInfo.annee = s;
 			this._bInAnnee = true;
@@ -332,9 +303,6 @@ export class BaseModel extends InfoElement {
 		return (this.userInfo !== null) ? this.userInfo.unite : null;
     }
     public set unite(s: IUnite) {
-		if (this.is_in_unite_change) {
-			return;
-		}
 		if (this.userInfo !== null) {
 			this.userInfo.unite = s;
 			this._bInUnite = true;
@@ -470,4 +438,37 @@ export class BaseModel extends InfoElement {
         }// p
         return Promise.all(pp);
     }// retrive_avatars
+	protected perform_activate(): Promise<any> {
+		if (this.departement === null){
+			if (this.departements.length > 0){
+				this.departement = this.departements[0];
+			}
+		}
+		if (this.annee === null){
+			if (this.annees.length > 0){
+				this.annee = this.annees[0];
+			}
+		}
+		if (this.semestre === null){
+			if (this.semestres.length > 0){
+				this.semestre = this.semestres[0];
+			}
+		}
+		if (this.groupe === null){
+			if (this.groupes.length > 0){
+				this.groupe = this.groupes[0];
+			}
+		}
+		if (this.unite === null){
+			if (this.unites.length > 0){
+				this.unite = this.unites[0];
+			}
+		}
+		if (this.matiere === null){
+			if (this.matieres.length > 0){
+				this.matiere = this.matieres[0];
+			}
+		}
+		return Promise.resolve(true);
+	}
 }// class BaseModel
