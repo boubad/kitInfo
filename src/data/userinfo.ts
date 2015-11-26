@@ -63,17 +63,32 @@ export class UserInfo extends InfoElement {
 	public get groupes(): IGroupe[] {
 		return ((this._groupes !== undefined) && (this._groupes !== null)) ? this._groupes : [];
 	}
+	public set groupes(s:IGroupe[]){
+		this._groupes = s;
+	}
 	public get matieres(): IMatiere[] {
 		return ((this._matieres !== undefined) && (this._matieres !== null)) ? this._matieres : [];
+	}
+	public set matieres(s:IMatiere[]){
+		this._matieres = s;
 	}
 	public get unites(): IUnite[] {
 		return ((this._unites !== undefined) && (this._unites !== null)) ? this._unites : [];
 	}
+	public set unites(s:IUnite[]){
+		this._unites = s;
+	}
 	public get semestres(): ISemestre[] {
 		return ((this._semestres !== undefined) && (this._semestres !== null)) ? this._semestres : [];
 	}
+	public set semestres(s:ISemestre[]){
+		this._semestres = s;
+	}
 	public get annees(): IAnnee[] {
 		return ((this._annees !== undefined) && (this._annees !== null)) ? this._annees : [];
+	}
+	public set annees(s:IAnnee[]){
+		this._annees = s;
 	}
     //
     public get departements(): IDepartement[] {

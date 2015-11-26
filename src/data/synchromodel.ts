@@ -80,6 +80,7 @@ export class SynchroModel extends BaseView {
 		this.clear_error();
 		this.info_message = "Synchronization en cours (import) ...";
 		return this.syncManager.import_from().then((r) => {
+			this.userInfo.loginInfo.refresh_data();
 			this.info_message = "Synchronization terminée!";
 			this.canPerform = true;
 			return true;

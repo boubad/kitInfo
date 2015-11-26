@@ -20,7 +20,7 @@ export class AdminRouter extends BaseModel {
 		config.map([
 			{ route: ['', 'home'], moduleId: '../home', nav: true, title: 'Accueil' },
 			{ route: 'etudaffectations', moduleId: './etudaffectations', nav: true, title: 'Affectations Etudiants' },
-			{ route: 'profaffectations', moduleId: './profaffectations', nav: true, title: 'Affectations Enseignants' },
+			{ route: 'profaffectations', moduleId: './enseignantaffectations', nav: true, title: 'Affectations Enseignants' },
 			{ route: 'importetuds', moduleId: './import-etuds', nav: true, title: 'Import Etudiants' },
 			{ route: 'semestres', moduleId: './semestres', nav: true, title: 'Semestres' },
 			{ route: 'annees', moduleId: './annees', nav: true, title: 'Années' },

@@ -4,11 +4,12 @@ import {LoginInfo} from './logininfo';
 import {UserInfo} from './userinfo';
 import {IDataService, IUIManager, IItemFactory, ISemestre, IBaseItem,
 IDepartement, IGroupe, IUnite, IAnnee, IMatiere, IPerson, IInfoRouter} from 'infodata';
+import {GENRE_TP} from './infoconstants';
 //
 declare var window;
 //
 export class BaseModel extends InfoElement {
-	
+
 	private _userinfo: UserInfo;
 	private _bInDep: boolean;
 	private _bInAnnee: boolean;
@@ -29,6 +30,20 @@ export class BaseModel extends InfoElement {
 		super();
 		this._userinfo = user;
 	}// constructor
+	//
+	public get_departement_groupetps():Promise<IGroupe[]> {
+		let oRet:IGroupe[]= [];
+		let model = this.itemFactory.create_groupe();
+		return this.dataService.query_items(model.type(),{
+			departementid:this.departementid,
+			genre: GENRE_TP
+		}).then((gg:IGroupe[])=>{
+			oRet = gg;
+			return gg;
+		}).catch((e)=>{
+			return oRet;
+		})
+	}//get_departement_groupetps
 	//
 	public get anneeMinDate(): string {
 		return (this._anneeMinDate !== undefined) ? this._anneeMinDate : null;
@@ -145,8 +160,8 @@ export class BaseModel extends InfoElement {
 		return (this._userinfo !== undefined) ? this._userinfo : null;
 	}
 	public navigate_to(route: string, args?: any): any {
-		if (this.userInfo !== null){
-			this.userInfo.navigate_to(route,args);
+		if (this.userInfo !== null) {
+			this.userInfo.navigate_to(route, args);
 		}
 	}
 	protected createUrl(blob: Blob): string {
@@ -217,16 +232,29 @@ export class BaseModel extends InfoElement {
         let cur = (s !== undefined) ? s : null;
 		this.userInfo.departement = cur;
 		this.userInfo.post_update_departement().then((b1) => {
-			if (this.annee !== null) {
-				this._anneeMinDate = (this.annee.startDate !== null) ? this.annee.startDate.toISOString().substr(0, 10) : null;
-				this._anneeMaxDate = (this.annee.endDate !== null) ? this.annee.endDate.toISOString().substr(0, 10) : null;
+			if ((this.annee !== undefined) && (this.annee !== null)) {
+				let a: Date = this.annee.startDate;
+				if ((a !== undefined) && (a !== null)) {
+					this._anneeMinDate = a.toISOString().substr(0, 10);
+				}
+				a = this.annee.endDate;
+				if ((a !== undefined) && (a !== null)) {
+					this._anneeMaxDate = a.toISOString().substr(0, 10);
+				}
 			}
-			if (this.semestre !== null) {
-				this._semestreMinDate = (this.semestre.startDate !== null) ? this.semestre.startDate.toISOString().substr(0, 10) : null;
-				this._semestreMaxDate = (this.semestre.endDate !== null) ? this.semestre.endDate.toISOString().substr(0, 10) : null;
+			if ((this.semestre !== undefined) && (this.semestre !== null)) {
+				let a: Date = this.semestre.startDate;
+				if ((a !== undefined) && (a !== null)) {
+					this._semestreMinDate = a.toISOString().substr(0, 10);
+				}
+				a = this.semestre.endDate;
+				if ((a !== undefined) && (a !== null)) {
+					this._semestreMaxDate = a.toISOString().substr(0, 10);
+				}
 			}
 			this._bInDep = false;
 		});
+	}
     //
     public get semestre(): ISemestre {
 		return (this.userInfo !== null) ? this.userInfo.semestre : null;
@@ -237,9 +265,15 @@ export class BaseModel extends InfoElement {
 			this._bInSemestre = true;
 			this._semestreMinDate = null;
 			this._semestreMaxDate = null;
-			if (this.semestre !== null) {
-				this._semestreMinDate = (this.semestre.startDate !== null) ? this.semestre.startDate.toISOString().substr(0, 10) : null;
-				this._semestreMaxDate = (this.semestre.endDate !== null) ? this.semestre.endDate.toISOString().substr(0, 10) : null;
+			if ((this.semestre !== undefined) && (this.semestre !== null)) {
+				let a: Date = this.semestre.startDate;
+				if ((a !== undefined) && (a !== null)) {
+					this._semestreMinDate = a.toISOString().substr(0, 10);
+				}
+				a = this.semestre.endDate;
+				if ((a !== undefined) && (a !== null)) {
+					this._semestreMaxDate = a.toISOString().substr(0, 10);
+				}
 			}
 			this.post_update_semestre().then((x) => {
 				this._bInSemestre = false;
@@ -282,13 +316,25 @@ export class BaseModel extends InfoElement {
 			this._anneeMaxDate = null;
 			this._semestreMinDate = null;
 			this._semestreMaxDate = null;
-			if (this.annee !== null) {
-				this._anneeMinDate = (this.annee.startDate !== null) ? this.annee.startDate.toISOString().substr(0, 10) : null;
-				this._anneeMaxDate = (this.annee.endDate !== null) ? this.annee.endDate.toISOString().substr(0, 10) : null;
+			if ((this.annee !== undefined) && (this.annee !== null)) {
+				let a: Date = this.annee.startDate;
+				if ((a !== undefined) && (a !== null)) {
+					this._anneeMinDate = a.toISOString().substr(0, 10);
+				}
+				a = this.annee.endDate;
+				if ((a !== undefined) && (a !== null)) {
+					this._anneeMaxDate = a.toISOString().substr(0, 10);
+				}
 			}
-			if (this.semestre !== null) {
-				this._semestreMinDate = (this.semestre.startDate !== null) ? this.semestre.startDate.toISOString().substr(0, 10) : null;
-				this._semestreMaxDate = (this.semestre.endDate !== null) ? this.semestre.endDate.toISOString().substr(0, 10) : null;
+			if ((this.semestre !== undefined) && (this.semestre !== null)) {
+				let a: Date = this.semestre.startDate;
+				if ((a !== undefined) && (a !== null)) {
+					this._semestreMinDate = a.toISOString().substr(0, 10);
+				}
+				a = this.semestre.endDate;
+				if ((a !== undefined) && (a !== null)) {
+					this._semestreMaxDate = a.toISOString().substr(0, 10);
+				}
 			}
 			this.userInfo.post_update_annee().then((xx) => {
 				return this.post_update_annee();
@@ -312,41 +358,41 @@ export class BaseModel extends InfoElement {
 		}
     }
 	//
-	public get departementid():string {
+	public get departementid(): string {
 		return (this.departement !== null) ? this.departement.id : null;
 	}
-	public get anneeid():string {
+	public get anneeid(): string {
 		return (this.annee !== null) ? this.annee.id : null;
 	}
-	public get semestreid():string {
+	public get semestreid(): string {
 		return (this.semestre !== null) ? this.semestre.id : null;
 	}
-	public get groupeid():string {
+	public get groupeid(): string {
 		return (this.groupe !== null) ? this.groupe.id : null;
 	}
-	public get uniteid():string {
+	public get uniteid(): string {
 		return (this.unite !== null) ? this.unite.id : null;
 	}
-	public get matiereid():string {
+	public get matiereid(): string {
 		return (this.matiere !== null) ? this.matiere.id : null;
 	}
 	//
-	public get departementName():string {
+	public get departementName(): string {
 		return (this.departement !== null) ? this.departement.text : null;
 	}
-	public get anneeName():string {
+	public get anneeName(): string {
 		return (this.annee !== null) ? this.annee.text : null;
 	}
-	public get semestreName():string {
+	public get semestreName(): string {
 		return (this.semestre !== null) ? this.semestre.text : null;
 	}
-	public get groupeName():string {
+	public get groupeName(): string {
 		return (this.groupe !== null) ? this.groupe.text : null;
 	}
-	public get uniteName():string {
+	public get uniteName(): string {
 		return (this.unite !== null) ? this.unite.text : null;
 	}
-	public get matiereName():string {
+	public get matiereName(): string {
 		return (this.matiere !== null) ? this.matiere.text : null;
 	}
     //
@@ -439,33 +485,33 @@ export class BaseModel extends InfoElement {
         return Promise.all(pp);
     }// retrive_avatars
 	protected perform_activate(): Promise<any> {
-		if (this.departement === null){
-			if (this.departements.length > 0){
+		if (this.departement === null) {
+			if (this.departements.length > 0) {
 				this.departement = this.departements[0];
 			}
 		}
-		if (this.annee === null){
-			if (this.annees.length > 0){
+		if (this.annee === null) {
+			if (this.annees.length > 0) {
 				this.annee = this.annees[0];
 			}
 		}
-		if (this.semestre === null){
-			if (this.semestres.length > 0){
+		if (this.semestre === null) {
+			if (this.semestres.length > 0) {
 				this.semestre = this.semestres[0];
 			}
 		}
-		if (this.groupe === null){
-			if (this.groupes.length > 0){
+		if (this.groupe === null) {
+			if (this.groupes.length > 0) {
 				this.groupe = this.groupes[0];
 			}
 		}
-		if (this.unite === null){
-			if (this.unites.length > 0){
+		if (this.unite === null) {
+			if (this.unites.length > 0) {
 				this.unite = this.unites[0];
 			}
 		}
-		if (this.matiere === null){
-			if (this.matieres.length > 0){
+		if (this.matiere === null) {
+			if (this.matieres.length > 0) {
 				this.matiere = this.matieres[0];
 			}
 		}

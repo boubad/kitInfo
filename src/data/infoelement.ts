@@ -47,15 +47,24 @@ export class InfoElement implements IInfoElement {
 	}// sort_func
 	//
 	protected check_string(s: string): string {
-		let ss = ((s !== undefined) && (s !== null)) ? s.trim() : null;
+		if ((s === undefined) || (s === null)) {
+			return null;
+		}
+		let ss = s.toString().trim();
 		return ((ss !== null) && (ss.length > 0)) ? ss : null;
 	}
 	protected check_upper_string(s: string): string {
-		let ss = ((s !== undefined) && (s !== null)) ? s.trim() : null;
+		if ((s === undefined) || (s === null)) {
+			return null;
+		}
+		let ss = s.toString().trim();
 		return ((ss !== null) && (ss.length > 0)) ? ss.toUpperCase() : null;
 	}
 	protected format_name(s: string) {
-        var ss: string = ((s !== undefined) && (s !== null)) ? s.trim() : null;
+		if ((s === undefined) || (s === null)) {
+			return null;
+		}
+		let ss = s.toString().trim();
         if ((ss !== null) && (ss.length > 0)) {
             if (ss.length > 1) {
                 ss = ss.substr(0, 1).toUpperCase() + ss.substr(1);
@@ -85,7 +94,9 @@ export class InfoElement implements IInfoElement {
                 let t = Date.parse(d.toString());
                 if (!isNaN(t)) {
                     let dd = new Date(t);
-                    sRet = dd.toISOString().substr(0, 10);
+					if ((dd !== undefined) && (dd !== null)) {
+						sRet = dd.toISOString().substr(0, 10);
+					}
                 }
             } catch (e) { }
         }
@@ -137,6 +148,10 @@ export class InfoElement implements IInfoElement {
         if ((sRet !== null) && (sRet.length < 1)) {
             sRet = null;
         }
+		if (sRet !== null){
+			sRet = sRet.replace(" ","");
+			sRet = sRet.replace("'","");
+		}
         return sRet;
     }// create_username
 	protected create_date_key(d: Date): string {

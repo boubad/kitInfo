@@ -6,7 +6,6 @@
 					<div class="form-group">
 						<label class="form-label" for="departements">Dép.</label>
 						<select id="departements" value.bind="departement">
-							<option>Dep?...</option>
 							<option repeat.for="depelem of departements" model.bind="depelem">${depelem.text}</option>
 						</select>
 					</div>

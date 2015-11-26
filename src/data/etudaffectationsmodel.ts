@@ -20,11 +20,7 @@ export class EtudaffectationsModel extends AffectationViewModel<IEtudiantAffecta
 			departementid: this.departementid ,
 			departementName: this.departementName});
     }
-	protected prepare_model(): any {
-		return {type: this.modelItem.type(),
-			semestreid:this.semestreid,
-			groupeid: this.groupeid};
-	}// prepare_model
+	
 	private get_groupe_parents(p:IGroupe) : Promise<IGroupe[]> {
 		let oRet:IGroupe[] = [];
 		if ((p === undefined) || (p === null)){
@@ -59,6 +55,11 @@ export class EtudaffectationsModel extends AffectationViewModel<IEtudiantAffecta
 			return oRet;
 		});
 	}// get_groupe_parents
+	protected prepare_model(): any {
+		return {type: this.modelItem.type(),
+			semestreid:this.semestreid,
+			groupeid: this.groupeid};
+	}// prepare_model
     protected create_item(): IEtudiantAffectation {
         let p = this.itemFactory.create_etudiantaffectation({
             departementid: this.departementid,
@@ -78,8 +79,14 @@ export class EtudaffectationsModel extends AffectationViewModel<IEtudiantAffecta
     }
 	protected post_update_departement(): Promise<boolean> {
         return super.post_update_departement().then((r) => {
+			if ((this.departement == null) && (this.departements.length > 0)){
+				this.departement = this.departements[0];
+			}
 			this._groupes = null;
-			return this.get_groupes();
+			if ((this.groupe == null) && (this.groupes.length > 0)){
+				this.groupe = this.groupes[0];
+			}
+			return true;
 		}).then((b)=>{
 			return true;
 		})
@@ -90,7 +97,11 @@ export class EtudaffectationsModel extends AffectationViewModel<IEtudiantAffecta
 		this.currentAffectations = [];
 		return this.get_groupe_parents(this.groupe).then((gg) => {
 			this._pgroupes = ((gg !== undefined) && (gg !== null)) ? gg : [];
+			if (!this.in_activate) {
 			return this.refreshAll();
+		} else {
+			return Promise.resolve(false);
+		}
 		});
     }
 	private save_affectation(p: IEtudiantAffectation): Promise<boolean> {
@@ -115,11 +126,13 @@ export class EtudaffectationsModel extends AffectationViewModel<IEtudiantAffecta
 	protected perform_activate(): Promise<any> {
 		return super.perform_activate().then((r) => {
 			this._groupes = null;
-			return this.get_groupes();
+			if ((this.groupe == null) && (this.groupes.length > 0)){
+				this.groupe = this.groupes[0];
+			}
 		});
 	}
 	protected get_groupes(): IGroupe[] {
-		if ((this._groupes !== undefined) && (this._groupes !== null)) {
+		if ((this._groupes !== undefined) && (this._groupes !== null) && (this._groupes.length > 0)) {
 			return this._groupes;
 		}
 		let oRet: IGroupe[] = [];

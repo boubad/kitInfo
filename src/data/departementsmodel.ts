@@ -19,6 +19,20 @@ export class DepartementsModel extends SigleNamedViewModel<IDepartement> {
     public get isEditable(): boolean {
 		return this.is_super;
     }
+	public save(): Promise<any> {
+		return super.save().then((x)=>{
+			this.userInfo.loginInfo.refresh_data();
+		}).catch((e)=>{
+			this.set_error(e);
+		})
+	}
+	public remove(): Promise<any> {
+		return super.remove().then((x)=>{
+			this.userInfo.loginInfo.refresh_data();
+		}).catch((e)=>{
+			this.set_error(e);
+		})
+	}
     public canActivate(params?: any, config?: any, instruction?: any): any {
 		let bRet: boolean = false;
 		if (this.is_connected) {

@@ -242,6 +242,9 @@ export class DataService extends InfoElement implements IDataService {
 		if ((ids === undefined) || (ids === null)) {
 			return Promise.resolve(oRet);
 		}
+		if (ids.length < 1){
+			return Promise.resolve(oRet);
+		}
 		let fact = this.itemFactory;
 		return this.service.docs_array(ids).then((docs) => {
 			if ((docs !== undefined) && (docs !== null)) {

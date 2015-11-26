@@ -135,6 +135,9 @@ export class Person extends BaseItem implements IPerson {
 			if (oMap.groupeSigle !== undefined){
 				this.groupeSigle = oMap.groupeSigle;
 			}
+			if (oMap.sigleGroupe !== undefined){
+				this.groupeSigle = oMap.sigleGroupe;
+			}
 			if (oMap.groupeid !== undefined){
 				this.groupeid = oMap.groupeid;
 			}
@@ -466,9 +469,9 @@ export class Person extends BaseItem implements IPerson {
             this.password = null;
         } else {
             var v = null;
-            var x = ct.trim();
+            var x = ct;
             if (x.length > 0) {
-                v = cc.md5(ct);
+                v = cc.md5(x);
             }
             this.password = v;
         }

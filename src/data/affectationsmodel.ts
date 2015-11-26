@@ -12,7 +12,6 @@ export class AffectationViewModel<T extends IAffectation, P extends IDepartement
     private _person_model: P = null;
     protected _start: Date = null;
     protected _end: Date = null;
-	protected _xgroupes: IGroupe[] = [];
     //
     constructor(info: UserInfo) {
         super(info);
@@ -108,17 +107,15 @@ export class AffectationViewModel<T extends IAffectation, P extends IDepartement
 	protected post_update_departement(): Promise<boolean> {
         this.currentPersons = [];
         this.persons = [];
-		this._xgroupes = null;
 		let id = this.departementid;
 		this.personModel.departementid = id;
 		if (id === null) {
 			return Promise.resolve(false);
 		}
-		let gg = this.xgroupes;
 		return this.dataService.query_items(this.personModel.type(), { departementid: id }).then((pp: P[]) => {
 			this.persons = ((pp !== undefined) && (pp !== null)) ? pp : [];
 			return true;
-		})
+		});
     }// post_change_departement
     protected post_update_groupe(): Promise<any> {
 		this.modelItem.groupeid = this.groupeid;
@@ -148,13 +145,6 @@ export class AffectationViewModel<T extends IAffectation, P extends IDepartement
 	protected perform_get_groupes(): IGroupe[] {
 		return this.groupes;
 	}
-	public get xgroupes(): IGroupe[] {
-		if ((this._xgroupes === undefined) || (this._xgroupes === null)) {
-			this._xgroupes = this.perform_get_groupes();
-		}
-		return this._xgroupes;
-	}
-
     public get canRemove(): boolean {
         return ((this.currentAffectations !== null) && (this.currentAffectations.length > 0));
     }// canRemove
@@ -221,12 +211,13 @@ export class AffectationViewModel<T extends IAffectation, P extends IDepartement
     }// refreshAll
 	protected perform_activate(): Promise<any> {
 		return super.perform_activate().then((r) => {
-			this._xgroupes = null;
-			let old = this.departement;
-			let id = (old !== null) ? old.id : null;
-			this.departement = null;
-			this.departement = this.sync_array(this.departements, id);
-			let gg = this.xgroupes;
+			if ((this.departement == null) && (this.departements.length > 0)){
+				this.departement = this.departements[0];
+			}
+			let id = this.departementid;
+			return this.dataService.query_items(this.personModel.type(), { departementid: id });
+		}).then((pp: P[]) => {
+			this.persons = ((pp !== undefined) && (pp !== null)) ? pp : [];
 			return true;
 		});
 	}// perform_activate

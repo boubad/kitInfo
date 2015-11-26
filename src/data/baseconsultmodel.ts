@@ -9,7 +9,6 @@ export class BaseConsultViewModel<T extends IBaseItem> extends BaseView {
 	//
 	private _items: T[];
 	private _current_item: T;
-
 	protected fileDesc: IFileDesc;
 	private _item_model: T;
 	private _page_size: number;
@@ -17,7 +16,6 @@ export class BaseConsultViewModel<T extends IBaseItem> extends BaseView {
 	private _pages_count: number;
 	private _allIds: string[];
 	private _pageStatus: string;
-	private _in_activate: boolean;
 	//
 	constructor(info: UserInfo) {
 		super(info);
@@ -26,7 +24,6 @@ export class BaseConsultViewModel<T extends IBaseItem> extends BaseView {
 		this._pages_count = 0;
 		this.fileDesc = new FileDesc();
 		this._allIds = [];
-		this._in_activate = false;
 	}// constructor
 	
 	protected create_item(): T {
@@ -35,13 +32,7 @@ export class BaseConsultViewModel<T extends IBaseItem> extends BaseView {
 	protected prepare_model(): any {
 		return {};
 	}// prepare_model
-	protected get in_activate(): boolean {
-		return ((this._in_activate !== undefined) && (this._in_activate !== null)) ?
-			this._in_activate : false;
-	}
-	protected set in_activate(s: boolean) {
-		this._in_activate = s;
-	}
+	
 	public get items(): T[] {
 		return ((this._items !== undefined) && (this._items !== null)) ? this._items : [];
 	}

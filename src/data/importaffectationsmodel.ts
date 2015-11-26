@@ -1,7 +1,7 @@
 // importaffectationmodel.ts
 //
 import {UserInfo} from './userinfo';
-import {BaseModel} from '../basemodel';
+import {BaseView} from './baseview';
 import {CSVImporter} from './cvsimporter';
 import {IPerson, IEtudiant, IGroupe, IEtudiantAffectation} from 'infodata';
 //
@@ -10,7 +10,7 @@ interface MyEvent extends EventTarget {
 }
 //
 //
-export class ImportAffectationModel extends BaseModel {
+export class ImportAffectationModel extends BaseView {
     //
 	private _importer: CSVImporter = null;
 	private _persons: IPerson[] = [];
@@ -22,8 +22,27 @@ export class ImportAffectationModel extends BaseModel {
 		this.title="Import Etudiants/Affectations";
 		this._inwork = false;
     }// constructor
+	protected post_update_departement(): Promise<boolean> {
+        return super.post_update_departement().then((r)=>{
+			return this.get_departement_groupetps();
+		}).then((gg)=>{
+			this._grps = gg;
+			return true;
+		})
+    }// post_change_departement
+	protected perform_activate(): Promise<any> {
+		return super.perform_activate().then((r) => {
+			if ((this.departement == null) && (this.departements.length > 0)){
+				this.departement = this.departements[0];
+			}
+			return this.get_departement_groupetps();
+		}).then((pp: IGroupe[]) => {
+			this._grps = pp;
+			return true;
+		});
+	}// perform_activate
 	public canActivate(params?: any, config?: any, instruction?: any): any {
-		return this.isAdmin;
+		return this.is_super || this.is_admin;
     }// activate
 	//
 	public get persons(): IPerson[] {
@@ -78,7 +97,7 @@ export class ImportAffectationModel extends BaseModel {
 		if ((dd !== undefined) && (dd !== null)) {
 			for (let p of dd) {
 				if (p !== null) {
-					p.groupeId = this.get_groupe_id_by_sigle(p.groupeSigle);
+					p.groupeid = this.get_groupe_id_by_sigle(p.groupeSigle);
 					if ((p.username === undefined) || (p.username === null)) {
 						p.username = this.create_username(p.lastname, p.firstname);
 					}
@@ -87,7 +106,7 @@ export class ImportAffectationModel extends BaseModel {
 						p.reset_password();
 					}
 					this.add_id_to_array(p.departementids, this.departementid);
-					this.add_id_to_array(p.groupeids, p.groupeId);
+					this.add_id_to_array(p.groupeids, p.groupeid);
 				}// p
 			}// dd	
 		}// dd
@@ -150,13 +169,13 @@ export class ImportAffectationModel extends BaseModel {
 				});
 				pEtud.check_id();
 				nEtudid = pEtud.id;
-				return service.save_personitem(pEtud);
+				return service.save_item(pEtud);
 			} else {
 				return Promise.resolve(true);
 			}
 		}).then((bx) => {
 			if (pPers !== null) {
-				let grpid = p.groupeId;
+				let grpid = p.groupeid;
 				if ((grpid !== null) && (semid !== null)) {
 					let px = this.itemFactory.create_etudiantaffectation({
 						etudiantid: nEtudid,
@@ -178,7 +197,7 @@ export class ImportAffectationModel extends BaseModel {
 						endDate: (this.semestre !== null) ? this.semestre.endDate : null,
 					});
 					px.check_id();
-					return service.save_personitem(px);
+					return service.save_item(px);
 				} else {
 					return Promise.resolve(true);
 				}

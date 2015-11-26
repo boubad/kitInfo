@@ -3,7 +3,7 @@
 import {UserInfo} from './userinfo';
 import {BaseEditViewModel} from './baseeditmodel';
 import {CSVImporter} from './cvsimporter';
-import {IPerson, IDepartementPerson, ITransformArray} from 'infodata';
+import {IPerson, IDepartementPerson, ITransformArray,IBaseItem} from 'infodata';
 //
 interface MyEvent extends EventTarget {
     target: { files: any, result: any };
@@ -139,6 +139,64 @@ export class PersonViewModel<T extends IDepartementPerson> extends BaseEditViewM
 			self.set_error(err);
 		});
     }// reset_password
+	//
+	private sync_avatars(): Promise<boolean> {
+		let pPers = this.currentPerson;
+		if ((pPers === undefined) || (pPers === null)){
+			return Promise.resolve(false);
+		}
+		if ((pPers.id === null) || (pPers.rev === null)){
+			return Promise.resolve(false);
+		}
+		let items:IBaseItem[] = [];
+		let avatarid = pPers.avatarid;
+		let service = this.dataService;
+		return service.get_items_array(pPers.administratorids).then((pp1:IBaseItem[])=>{
+			if ((pp1 !== undefined) && (pp1 !== null) && (pp1.length > 0)){
+				for (let x of pp1){
+					x.avatarid = avatarid;
+					items.push(x);
+				}
+			}
+			return service.get_items_array(pPers.enseignantids);
+		}).then((pp2)=>{
+			if ((pp2 !== undefined) && (pp2 !== null) && (pp2.length > 0)){
+				for (let x of pp2){
+					x.avatarid = avatarid;
+					items.push(x);
+				}
+			}
+			return service.get_items_array(pPers.etudiantids);
+		}).then((pp3)=>{
+			if ((pp3 !== undefined) && (pp3 !== null) && (pp3.length > 0)){
+				for (let x of pp3){
+					x.avatarid = avatarid;
+					items.push(x);
+				}
+			}
+			return service.get_items_array(pPers.affectationids);
+		}).then((pp4)=>{
+			if ((pp4 !== undefined) && (pp4 !== null) && (pp4.length > 0)){
+				for (let x of pp4){
+					x.avatarid = avatarid;
+					items.push(x);
+				}
+			}
+			return service.get_items_array(pPers.eventids);
+		}).then((pp5)=>{
+			if ((pp5 !== undefined) && (pp5 !== null) && (pp5.length > 0)){
+				for (let x of pp5){
+					x.avatarid = avatarid;
+					items.push(x);
+				}
+			}
+			return service.maintains_items(items);
+		}).then((xx)=>{
+			return true;
+		}).catch((e)=>{
+			return false;
+		})
+	}// sync_avatars;
     //
     public saveAvatar(): any {
 		let f = this.fileDesc;
@@ -173,11 +231,64 @@ export class PersonViewModel<T extends IDepartementPerson> extends BaseEditViewM
 		}).then((xr) => {
 			return this.retrieve_one_avatar(this.currentItem);
 		}).then((xx) => {
+			return this.sync_avatars();
+		}).then((cc)=>{
 			this.info_message = 'Avatar modifié.';
 		}).catch((err) => {
 			this.set_error(err);
 		});
     }// saveAvatar
+	//
+	public removeAvatar(): any {
+		let pPers = this.currentPerson;
+		if ((pPers === undefined) || (pPers === null)){
+			return Promise.resolve(false);
+		}
+		if ((pPers.id === null) || (pPers.rev === null)){
+			return Promise.resolve(false);
+		}
+		let avatarid = pPers.avatarid;
+		if (avatarid === null){
+			return Promise.resolve(false);
+		}
+		let p = this.currentItem;
+		let service = this.dataService;
+		return this.confirm('Voulez-vous vraiment supprimer cet avatar?').then((bRet) => {
+			if (bRet) {
+				this.clear_error();
+				return service.remove_attachment(pPers.id, avatarid);
+			} else {
+				return Promise.resolve(false);
+			}
+		}).then((b) => {
+			if (b) {
+				if (p.url !== null) {
+					this.uiManager.revokeUrl(p.url);
+					p.url = null;
+				}
+				p.avatarid = null;
+				return service.save_item(p);
+			} else {
+				return Promise.resolve(false);
+			}
+		}).then((x) => {
+			if (x) {
+				this.fileDesc.clear();
+				this.info_message = 'Avatar supprimé.';
+				return true;
+			} else {
+				return false;
+			}
+		}).then((bx)=>{
+			if (bx){
+				return this.sync_avatars();
+			} else {
+				return false;
+			}
+		}).catch((err) => {
+			this.set_error(err);
+		});
+	}// removeAvatar
     //
 	protected post_change_item(): Promise<any> {
         return super.post_change_item().then((r) => {
