@@ -8,17 +8,9 @@ export class BaseEditViewModel<T extends IBaseItem> extends BaseConsultViewModel
 	private _add_mode: boolean = false;
 	private _old_item: T;
 	//
-	protected hasAvatars: boolean = false;
-	//
 	constructor(info: UserInfo) {
 		super(info);
 	}// constructor
-	//
-	public check_item(): void {
-		let old = this.currentItem;
-		this.currentItem = this.create_item();
-		this.currentItem = old;
-	}
 	//
 	protected is_storeable(): boolean {
 		return this.currentItem.is_storeable();
@@ -151,7 +143,6 @@ export class BaseEditViewModel<T extends IBaseItem> extends BaseConsultViewModel
 	public get canAdd(): boolean {
 		return (!this.addMode) && this.isEditable;
 	}
-	public set canAdd(s: boolean) { }
 	public addNew(): any {
 		this.oldItem = this.currentItem;
 		this.currentItem = this.create_item();
@@ -191,10 +182,6 @@ export class BaseEditViewModel<T extends IBaseItem> extends BaseConsultViewModel
 			return true;
 		});
 	}// refresh
-
-	protected prepare_refresh(): void {
-		super.prepare_refresh();
-	}
 	public save(): Promise<any> {
 		let item = this.currentItem;
 		if (!item.is_storeable()) {

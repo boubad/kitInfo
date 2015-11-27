@@ -65,11 +65,13 @@ export class BaseConsultViewModel<T extends IBaseItem> extends BaseView {
 		this._current_item = s;
 		this.fileDesc.clear();
 		let x = this.currentItem;
-		if ((x.avatarid !== null) && (x.avatardocid() !== null) &&
-			(x.url === null)) {
-			this.retrieve_one_avatar(x).then((x) => {
+		let docid = this.currentItem.avatardocid();
+		let id = this.currentItem.avatarid;
+		let url = this.currentItem.url;
+		if ((url === null) && (id !== null) && (docid !== null)){
+			this.retrieve_one_avatar(this.currentItem).then((v)=>{
 				this.post_change_item();
-			});
+			})
 		} else {
 			this.post_change_item();
 		}
@@ -88,20 +90,16 @@ export class BaseConsultViewModel<T extends IBaseItem> extends BaseView {
 	}
 	public refresh(): Promise<any> {
 		this.clear_error();
-		let model = this.modelItem;
 		if (this.items.length > 0) {
 			for (let elem of this.items) {
 				let x = elem.url;
 				if (x !== null) {
-					this.uiManager.revokeUrl(x);
+					this.revokeUrl(x);
 					elem.url = null;
 				}
 			}// elem
 		}
 		this.items = [];
-		if (!this.is_refresh()) {
-			return Promise.resolve(true);
-		}
 		let nbItems = this.allIds.length;
 		if (nbItems < 1) {
 			return Promise.resolve(true);
@@ -130,18 +128,23 @@ export class BaseConsultViewModel<T extends IBaseItem> extends BaseView {
 			}
 			let p = this.sync_array(this.items, oldid);
 			this.currentItem = p;
+			this._pageStatus = this.get_pageStatus();
 			return true;
 		});
 	}// refresh
-	public get pageStatus(): string {
+	private get_pageStatus(): string {
 		return (this.pagesCount > 1) ?
 			('Page ' + this.currentPage + ' sur ' + this.pagesCount) : null;
+	}
+	public get pageStatus(): string {
+		return (this._pageStatus !== undefined) ? this._pageStatus : null;
 	}
 	protected prepare_refresh(): void {
 		this._allIds = [];
 		this._pages_count = 0;
 		this._current_page = 0;
 		this.items = [];
+		this._pageStatus = null;
 	}
 	public refreshAll(): Promise<any> {
 		this.prepare_refresh();
@@ -177,7 +180,8 @@ export class BaseConsultViewModel<T extends IBaseItem> extends BaseView {
 		this._pages_count = ((s !== undefined) && (s !== null) && (s >= 0)) ? s : 0;
 	}
 	public get itemsPerPage(): number {
-		return this._page_size;
+		return ((this._page_size !== undefined) && (this._page_size > 0)) ?
+		this._page_size : 16;
 	}
 	public set itemsPerPage(s: number) {
 		let n = this.check_number(s);
@@ -187,6 +191,9 @@ export class BaseConsultViewModel<T extends IBaseItem> extends BaseView {
 		}
 	}
 	public get currentPage(): number {
+		if ((this._current_page === undefined) || (this._current_page === null)){
+			this._current_page = 0;
+		}
 		return (this._current_page + 1);
 	}
 	public set currentPage(s: number) {
