@@ -1,6 +1,6 @@
 //profaffectations.ts
 //
-import {InfoUserInfo} from '../infouserinfo';
+import {InfoUserInfo} from '../common/infouserinfo';
 import {EnseignantAffectationsModel} from '../data/enseignantaffectationsmodel';
 //
 export class Profaffectations extends EnseignantAffectationsModel {

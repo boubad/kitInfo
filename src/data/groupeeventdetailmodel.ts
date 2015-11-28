@@ -9,12 +9,10 @@ export class GroupeEventDetailModel extends EventDetailModel<IGroupeEvent> {
 	//
 	private _notes: IEtudiantEvent[];
 	private _evts: IEtudiantEvent[];
-	private _evtModel: IEtudiantEvent;
 	//
 	constructor(userinfo: UserInfo) {
 		super(userinfo);
 		this.title = "Détails Devoirs";
-		this._evtModel = this.itemFactory.create_etudiantevent();
 	}
 	public get notes(): IEtudiantEvent[] {
 		if ((this._notes === undefined) || (this._notes === null)) {
@@ -27,12 +25,6 @@ export class GroupeEventDetailModel extends EventDetailModel<IGroupeEvent> {
 			this._evts = [];
 		}
 		return this._evts;
-	}
-	private get evtModel(): IEtudiantEvent {
-		if ((this._evtModel === undefined) || (this._evtModel === null)) {
-			this._evtModel = this.itemFactory.create_etudiantevent();
-		}
-		return this._evtModel;
 	}
 	protected initialize_item(evtid: string): Promise<boolean> {
 		return super.initialize_item(evtid).then((b) => {

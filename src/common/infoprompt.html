@@ -1,0 +1,17 @@
+<template>
+	<ai-dialog>
+		<ai-dialog-header>
+		</ai-dialog-header>
+		<ai-dialog-body>
+			<h3>${promptText}</h3>
+		</ai-dialog-body>
+		<ai-dialog-footer>
+			<a class="btn btn-primary" click.trigger="controller.cancel()" href="#">
+				<i class="fa fa-reply fa-fw"></i>Annuler
+			</a>
+			<a class="btn btn-primary" click.trigger="controller.ok(true)" href="#">
+				<i class="fa fa-ok fa-fw"></i>Valider
+			</a>
+		</ai-dialog-footer>
+	</ai-dialog>
+</template>

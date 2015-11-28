@@ -1,6 +1,6 @@
 //etudaffectations.ts
 //
-import {InfoUserInfo} from '../infouserinfo';
+import {InfoUserInfo} from '../common/infouserinfo';
 import {EtudaffectationsModel} from '../data/etudaffectationsmodel';
 //
 export class Etudaffectations extends EtudaffectationsModel {

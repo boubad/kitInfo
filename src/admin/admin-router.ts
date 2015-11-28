@@ -2,7 +2,7 @@
 ///
 import {Router} from 'aurelia-router';
 import {BaseModel} from '../data/basemodel';
-import {InfoUserInfo} from '../infouserinfo';
+import {InfoUserInfo} from '../common/infouserinfo';
 //
 export class AdminRouter extends BaseModel {
 	//
@@ -18,7 +18,7 @@ export class AdminRouter extends BaseModel {
 	//
 	public configureRouter(config, router: Router) {
 		config.map([
-			{ route: ['', 'home'], moduleId: '../home', nav: true, title: 'Accueil' },
+			{ route: ['', 'home'], moduleId: '../common/home', nav: true, title: 'Accueil' },
 			{ route: 'etudaffectations', moduleId: './etudaffectations', nav: true, title: 'Affectations Etudiants' },
 			{ route: 'profaffectations', moduleId: './enseignantaffectations', nav: true, title: 'Affectations Enseignants' },
 			{ route: 'importetuds', moduleId: './import-etuds', nav: true, title: 'Import Etudiants' },

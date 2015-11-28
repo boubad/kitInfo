@@ -1,6 +1,6 @@
 //semestres.ts
 //
-import {InfoUserInfo} from '../infouserinfo';
+import {InfoUserInfo} from '../common/infouserinfo';
 import {SemestresModel} from '../data/semestresmodel';
 //
 export class Semestres extends SemestresModel {

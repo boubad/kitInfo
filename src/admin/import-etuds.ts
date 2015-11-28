@@ -1,6 +1,6 @@
 //import-etuds.ts
 //
-import {InfoUserInfo} from '../infouserinfo';
+import {InfoUserInfo} from '../common/infouserinfo';
 import {ImportAffectationModel} from '../data/importaffectationsmodel';
 //
 export class ImportEtuds extends ImportAffectationModel {

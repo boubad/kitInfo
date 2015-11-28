@@ -1,6 +1,6 @@
 //groupes.ts
 //
-import {InfoUserInfo} from '../infouserinfo';
+import {InfoUserInfo} from '../common/infouserinfo';
 import {GroupesModel} from '../data/groupesmodel';
 //
 export class Groupes extends GroupesModel {

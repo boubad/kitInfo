@@ -1,6 +1,6 @@
 //matieres.ts
 //
-import {InfoUserInfo} from '../infouserinfo';
+import {InfoUserInfo} from '../common/infouserinfo';
 import {MatieresModel} from '../data/matieresmodel';
 //
 export class Matieres extends MatieresModel {

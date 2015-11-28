@@ -1,6 +1,6 @@
 //enseignants.ts
 //
-import {InfoUserInfo} from '../infouserinfo';
+import {InfoUserInfo} from '../common/infouserinfo';
 import {EnseignantsModel} from '../data/enseignantsmodel';
 //
 import {IEnseignant} from 'infodata';

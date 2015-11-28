@@ -1,6 +1,6 @@
 //unites.ts
 //
-import {InfoUserInfo} from '../infouserinfo';
+import {InfoUserInfo} from '../common/infouserinfo';
 import {UnitesModel} from '../data/unitesmodel';
 //
 export class Unites extends UnitesModel {

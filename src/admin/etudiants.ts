@@ -1,6 +1,6 @@
 //etudiants.ts
 //
-import {InfoUserInfo} from '../infouserinfo';
+import {InfoUserInfo} from '../common/infouserinfo';
 import {EtudiantsModel} from '../data/etudiantsmodel';
 //
 export class Etudiants extends EtudiantsModel {
