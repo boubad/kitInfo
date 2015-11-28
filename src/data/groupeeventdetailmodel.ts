@@ -1,30 +1,20 @@
 //groupeeventdetailmodel.ts
 //
 import {UserInfo} from './userinfo';
-import {BaseDetailModel} from './basedetailmodel';
+import {EventDetailModel} from './eventdetailmodel';
 import {EVT_NOTE} from './infoconstants';
 import {IGroupeEvent, IEtudiantEvent, IEnseignantAffectation} from 'infodata';
 
-export class GroupeEventDetailModel extends BaseDetailModel<IGroupeEvent> {
+export class GroupeEventDetailModel extends EventDetailModel<IGroupeEvent> {
 	//
 	private _notes: IEtudiantEvent[];
 	private _evts: IEtudiantEvent[];
 	private _evtModel: IEtudiantEvent;
-	private _canEdit:boolean;
 	//
 	constructor(userinfo: UserInfo) {
 		super(userinfo);
 		this.title = "Détails Devoirs";
 		this._evtModel = this.itemFactory.create_etudiantevent();
-	}
-	public get canEdit():boolean {
-		if ((this._canEdit === undefined)|| (this._canEdit === null)){
-			this._canEdit = false;
-		}
-		return this._canEdit;
-	}
-	public get isReadOnly():boolean {
-		return (!this.canEdit);
 	}
 	public get notes(): IEtudiantEvent[] {
 		if ((this._notes === undefined) || (this._notes === null)) {
@@ -44,28 +34,16 @@ export class GroupeEventDetailModel extends BaseDetailModel<IGroupeEvent> {
 		}
 		return this._evtModel;
 	}
-	public activate(params?: any, config?: any, instruction?: any): any {
-		let id: string = null;
-		if (params.id !== undefined) {
-			id = params.id;
-		}
-		let p = this.event;
-		if (p !== null) {
-			if (p.url !== null) {
-				this.revokeUrl(p.url);
-			}
-		}
-		this._canEdit = false;
-		this.event = null;
-		return this.initialize_event(id).then((b) => {
-			let pp: IGroupeEvent = this.event;
+	protected initialize_item(evtid: string): Promise<boolean> {
+		return super.initialize_item(evtid).then((b) => {
+			let pp: IGroupeEvent = this.currentItem;
 			if (pp === null) {
-				this.event = this.itemFactory.create_groupeevent();
+				this.currentItem = this.itemFactory.create_groupeevent();
 				this.title = "Détails Devoirs";
 			} else {
-				this.title = this.event.name;
+				this.title = this.currentItem.name;
 			}
-			let affid = this.event.profaffectationid;
+			let affid = this.currentItem.profaffectationid;
 			return this.dataService.find_item_by_id(affid);
 		}).then((paff: IEnseignantAffectation) => {
 			if ((paff !== undefined) && (paff !== null)) {
@@ -79,17 +57,16 @@ export class GroupeEventDetailModel extends BaseDetailModel<IGroupeEvent> {
 				}
 				if (this.is_prof){
 					let cont = this.person.affectationids;
-					this._canEdit = this.contains_array_id(cont,paff.id);
+					this.canEdit = this.contains_array_id(cont,paff.id);
 				}
 			}// paff
 			return this.fill_notes();
 		});
-	}// activate
-	
+	}// initialize_groupeevent
 	private fill_notes(): Promise<any> {
 		this._notes = [];
 		this._evts = [];
-		let x = this.event;
+		let x = this.currentItem;
 		let id = (x !== null) ? x.id : null;
 		if (id === null) {
 			return Promise.resolve(true);
@@ -130,46 +107,46 @@ export class GroupeEventDetailModel extends BaseDetailModel<IGroupeEvent> {
 		return oRet;
 	}// filter_etudevents
 	public get groupeEventId(): string {
-		return (this.event !== null) ? this.event.id : null;
+		return (this.currentItem !== null) ? this.currentItem.id : null;
 	}
 	public get name(): string {
-		return (this.event !== null) ? this.event.name : null;
+		return (this.currentItem !== null) ? this.currentItem.name : null;
 	}
 	public set name(s: string) {
-		if (this.event !== null) {
-			this.event.name = s;
+		if (this.currentItem !== null) {
+			this.currentItem.name = s;
 		}
 	}
 	public get location(): string {
-		return (this.event !== null) ? this.event.location : null;
+		return (this.currentItem !== null) ? this.currentItem.location : null;
 	}
 	public set location(s: string) {
-		if (this.event !== null) {
-			this.event.location = s;
+		if (this.currentItem !== null) {
+			this.currentItem.location = s;
 		}
 	}
 	public get coefficient(): string {
-		return (this.event !== null) ? this.number_to_string(this.event.coefficient) : "1";
+		return (this.currentItem !== null) ? this.number_to_string(this.currentItem.coefficient) : "1";
 	}
 	public set coefficient(s: string) {
-		if (this.event !== null) {
-			this.event.coefficient = this.string_to_number(s);
+		if (this.currentItem !== null) {
+			this.currentItem.coefficient = this.string_to_number(s);
 		}
 	}
 	public get startTime(): string {
-		return (this.event !== null) ? this.event.startTime : null;
+		return (this.currentItem !== null) ? this.currentItem.startTime : null;
 	}
 	public set startTime(s: string) {
-		if (this.event !== null) {
-			this.event.startTime = s;
+		if (this.currentItem !== null) {
+			this.currentItem.startTime = s;
 		}
 	}
 	public get endTime(): string {
-		return (this.event !== null) ? this.event.endTime : null;
+		return (this.currentItem !== null) ? this.currentItem.endTime : null;
 	}
 	public set endTime(s: string) {
-		if (this.event !== null) {
-			this.event.endTime = s;
+		if (this.currentItem !== null) {
+			this.currentItem.endTime = s;
 		}
 	}
 }// class Profgroupeevents
