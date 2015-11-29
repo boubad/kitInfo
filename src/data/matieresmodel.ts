@@ -21,10 +21,14 @@ export class MatieresModel extends SigleNamedViewModel<IMatiere> {
 		return {type: this.modelItem.type(),
 			uniteid:this.uniteid};
 	}// prepare_model
-	public post_change_unite(): Promise<any> {
+	protected post_update_unite(): Promise<boolean> {
 		this.modelItem.uniteid = this.uniteid;
 		this.currentItem = this.create_item();
+		if (!this.in_activate){
 			return this.refreshAll();
+		} else {
+			return Promise.resolve(true);
+		}
 	}
 	protected is_refresh(): boolean {
 		return (this.uniteid !== null);

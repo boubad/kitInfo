@@ -18,7 +18,7 @@ export class DepSigleNameViewModel<T extends IDepartementSigleNamedItem>
 		return {type: this.modelItem.type(),
 			departementid:this.departementid};
 	}// prepare_model
-    public post_change_departement(): Promise<any> {
+    protected post_update_departement(): Promise<boolean> {
         this.modelItem.departementid = this.departementid;
         this.currentItem = this.create_item();
 		if (!this.in_activate){

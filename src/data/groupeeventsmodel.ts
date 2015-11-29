@@ -2,7 +2,7 @@
 //
 import {UserInfo} from './userinfo';
 import {BaseEditViewModel} from './baseeditmodel';
-import {EVT_NOTE, EVT_ABSENCE, EVT_RETARD, EVT_MISC,
+import {EVT_NOTE, EVT_ABSENCE, EVT_RETARD, EVT_MISC,GENRE_TP,
 GVT_EXAM, GVT_CONTROL, GVT_TP, GVT_TD, GVT_PROMO, GVT_MISC, PROFAFFECTATION_TYPE} from './infoconstants';
 import {IEnseignantAffectation, IEtudiantAffectation, IDepartement, IAnnee, ISemestre, IUnite, IMatiere,
 IGroupe,
@@ -242,7 +242,7 @@ export class GroupeEventsModel extends BaseEditViewModel<IGroupeEvent> {
 			(this.groupeid != this.currentProfAffectation.groupeid)) {
 			return Promise.resolve(true);
 		}
-		return this.dataService.get_semestre_groupe_etudaffectations(this.semestre, this.groupe).then((pp) => {
+		return this.get_semestre_groupe_etudaffectations(this.semestre, this.groupe).then((pp) => {
 			let xx: IEtudiantAffectation[] = ((pp !== undefined) && (pp !== null)) ? pp : [];
 			return this.retrieve_avatars(xx)
 		}).then((aa: IEtudiantAffectation[]) => {
@@ -315,7 +315,7 @@ export class GroupeEventsModel extends BaseEditViewModel<IGroupeEvent> {
             for (let n of xNotes) {
                 if (n.personid == personid) {
                     bFound = true;
-                    this.add_to_array(oRet, n);
+                    this.add_item_to_array(oRet, n);
                 }
             }// n
             if (!bFound) {
@@ -337,7 +337,7 @@ export class GroupeEventsModel extends BaseEditViewModel<IGroupeEvent> {
 					groupeEventName: this.currentItem.name,
 					coefficient: this.currentItem.coefficient,
 					etudiantid: a.etudiantid,
-					anneeid: this.anneeid;
+					anneeid: this.anneeid,
 					anneeName: this.anneeName,
 					semestreName: this.semestreName,
 					matiereCoefficient: (this.matiere !== null) ? this.matiere.coefficient : 1.0,
@@ -368,9 +368,7 @@ export class GroupeEventsModel extends BaseEditViewModel<IGroupeEvent> {
 		this._profaffectations = [];
         this._current_affectation = null;
 		this._xdeps = [];
-        return super.perform_activate().then((r) => {
-			return this.refresh_data();
-		}).then((rx) => {
+        return super.perform_activate().then((rx) => {
 			let pPers = this.person;
 			let ids: string[] = ((pPers !== undefined) && (pPers !== null)) ? pPers.affectationids : [];
 			return this.dataService.get_items_array(ids);
@@ -390,7 +388,7 @@ export class GroupeEventsModel extends BaseEditViewModel<IGroupeEvent> {
 						let depid = g.departementid;
 						for (let d of info.all_departements) {
 							if (d.id == depid) {
-								this.add_to_array(this._xdeps, d);
+								this.add_item_to_array(this._xdeps, d);
 							}
 						}// d
 					}//groupe
@@ -572,17 +570,11 @@ export class GroupeEventsModel extends BaseEditViewModel<IGroupeEvent> {
             firstname: firstname,
 			semestreid: this.semestreid,
 			matiereid: this.matiereid,
-			genre: this.xgenre,
-			eventDate: this.string_to_date(this.eventDate),
 			matiereName: (this.matiere !== null) ? this.matiere.text : null,
 			groupeName: (this.groupe !== null) ? this.groupe.text : null,
 			groupeid: (this.currentProfAffectation !== null) ? this.currentProfAffectation.groupeid : null,
             profaffectationid: this.profaffectationid,
 			avatarid: (pPers !== null) ? pPers.avatarid : null,
-			name: this.name,
-			location: this.location,
-			startTime: this.string_to_date(this.startTime),
-			endTime: this.string_to_date(this.endTime),
 			coefficient: 1.0,
 			minnote: 0,
 			maxnote: 20.0,
@@ -602,11 +594,18 @@ export class GroupeEventsModel extends BaseEditViewModel<IGroupeEvent> {
     }// create_item
 	protected prepare_model(): any {
 		return {
-			profaffectationid: (this.currentProfAffectation !== null) ? this.currentProfAffectation.id : null;
+			profaffectationid: (this.currentProfAffectation !== null) ? this.currentProfAffectation.id : null
 		};
 	}// prepare_model
     protected is_storeable(): boolean {
         if (this.currentItem !== null) {
+			this.currentItem.profaffectationid =  (this.currentProfAffectation !== null) ? this.currentProfAffectation.id : null;
+			this.currentItem.semestreid = this.semestreid;
+			this.currentItem.matiereid = this.matiereid; 
+			this.currentItem.personid = this.personid;
+			this.currentItem.firstname = this.person.firstname;
+			this.currentItem.lastname = this.person.lastname;
+			this.currentItem.departementid = this.departementid;
             this.currentItem.genre = (this.xgenre !== null) ? this.xgenre : null;
         }
         return super.is_storeable();
@@ -810,7 +809,7 @@ export class GroupeEventsModel extends BaseEditViewModel<IGroupeEvent> {
         let pp: Promise<any>[] = [];
         let service = this.dataService;
         for (let px of oRet) {
-			pp.push(service.save_personitem(px));
+			pp.push(service.save_item(px));
         }
         this.clear_error();
         return Promise.all(oRet).then((r) => {
@@ -836,7 +835,7 @@ export class GroupeEventsModel extends BaseEditViewModel<IGroupeEvent> {
         let pp: Promise<any>[] = [];
         let service = this.dataService;
         for (let px of oRet) {
-			pp.push(service.save_personitem(px));
+			pp.push(service.save_item(px));
         }
         this.clear_error();
         return Promise.all(oRet).then((rr) => {
@@ -939,13 +938,13 @@ export class GroupeEventsModel extends BaseEditViewModel<IGroupeEvent> {
 				return oRet;
 			}).catch((e) => {
 				return oRet;
-			}):
+			});
 		}
 		let ids: string[] = grp.childrenids;
 		if ((ids === undefined) || (ids === null)) {
 			ids = [];
 		}
-		return this.get_items_array(ids).then((gg: IGroupe[]) => {
+		return this.dataService.get_items_array(ids).then((gg: IGroupe[]) => {
 			let oAr: Promise<IEtudiantAffectation[]>[] = [];
 			if ((gg !== undefined) && (gg !== null)) {
 				for (let g of gg) {
