@@ -19,10 +19,17 @@ export class SemestresModel extends IntervalledViewModel<ISemestre> {
 		return {type: this.modelItem.type(),
 			anneeid:this.anneeid};
 	}// prepare_model
+	protected is_storeable():boolean{
+		if ((this.currentItem !== null) && (this.currentItem.anneeid == null)){
+			this.currentItem.anneeid = this.anneeid;
+		}
+		return super.is_storeable();
+	}
 	 protected is_refresh(): boolean {
+		
         return (this.anneeid !== null);
     }
-	public post_change_annee():Promise<any>{
+	protected post_update_annee():Promise<boolean>{
 		 this.modelItem.anneeid = this.anneeid;
         this.currentItem = this.create_item();
 		if (!this.in_activate){
