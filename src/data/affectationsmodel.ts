@@ -120,11 +120,7 @@ export class AffectationViewModel<T extends IAffectation, P extends IDepartement
     protected post_update_groupe(): Promise<any> {
 		this.modelItem.groupeid = this.groupeid;
 		this.currentAffectations = [];
-		if (!this.in_activate) {
-			return this.refreshAll();
-		} else {
-			return Promise.resolve(false);
-		}
+		return this.refreshAll();
     }
     protected post_update_semestre(): Promise<boolean> {
 		this.modelItem.semestreid = this.semestreid;
@@ -136,11 +132,7 @@ export class AffectationViewModel<T extends IAffectation, P extends IDepartement
 			this._start = sem.startDate;
 			this._end = sem.endDate;
 		}
-		if (!this.in_activate) {
-			return this.refreshAll();
-		} else {
-			return Promise.resolve(false);
-		}
+		return this.refreshAll();
     }
 	protected perform_get_groupes(): IGroupe[] {
 		return this.groupes;
@@ -218,6 +210,12 @@ export class AffectationViewModel<T extends IAffectation, P extends IDepartement
 			return this.dataService.query_items(this.personModel.type(), { departementid: id });
 		}).then((pp: P[]) => {
 			this.persons = ((pp !== undefined) && (pp !== null)) ? pp : [];
+			if ((this.semestre == null) && (this.semestres.length > 0)){
+				this.semestre = this.semestres[0];
+			}
+			if ((this.groupe == null) && (this.groupes.length > 0)){
+				this.groupe = this.groupes[0];
+			}
 			return true;
 		});
 	}// perform_activate

@@ -77,6 +77,7 @@ export class EtudaffectationsModel extends AffectationViewModel<IEtudiantAffecta
         });
         return p;
     }
+	/*
 	protected post_update_departement(): Promise<boolean> {
         return super.post_update_departement().then((r) => {
 			if ((this.departement == null) && (this.departements.length > 0)){
@@ -91,7 +92,7 @@ export class EtudaffectationsModel extends AffectationViewModel<IEtudiantAffecta
 			return true;
 		})
     }
-	public post_update_groupe(): Promise<any> {
+	protected post_update_groupe(): Promise<boolean> {
 		this._pgroupes = [];
 		this.modelItem.groupeid = this.groupeid;
 		this.currentAffectations = [];
@@ -104,6 +105,7 @@ export class EtudaffectationsModel extends AffectationViewModel<IEtudiantAffecta
 		}
 		});
     }
+	*/
 	private save_affectation(p: IEtudiantAffectation): Promise<boolean> {
 		let oRet: boolean = false;
 		return this.dataService.find_item_by_id(p.personid).then((pPers: IPerson) => {
@@ -126,9 +128,6 @@ export class EtudaffectationsModel extends AffectationViewModel<IEtudiantAffecta
 	protected perform_activate(): Promise<any> {
 		return super.perform_activate().then((r) => {
 			this._groupes = null;
-			if ((this.groupe == null) && (this.groupes.length > 0)){
-				this.groupe = this.groupes[0];
-			}
 		});
 	}
 	protected get_groupes(): IGroupe[] {

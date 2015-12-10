@@ -128,21 +128,27 @@ export class BaseModel extends InfoElement {
 	}
 	//
 	protected post_update_departement(): Promise<boolean> {
+		this._bInDep = false;
 		return Promise.resolve(true);
 	}
 	protected post_update_annee(): Promise<boolean> {
+		this._bInAnnee = false;
 		return Promise.resolve(true);
 	}
 	protected post_update_unite(): Promise<boolean> {
+		this._bInUnite = false;
 		return Promise.resolve(true);
 	}
 	protected post_update_groupe(): Promise<boolean> {
+		this._bInGroupe = false;
 		return Promise.resolve(true);
 	}
 	protected post_update_semestre(): Promise<boolean> {
+		this._bInSemestre = false;
 		return Promise.resolve(true);
 	}
 	protected post_update_matiere(): Promise<boolean> {
+		this._bInMatiere = false;
 		return Promise.resolve(true);
 	}
 	public navigate_to(route: string, args?: any): any {
@@ -224,7 +230,9 @@ export class BaseModel extends InfoElement {
 		this._bInDep = true;
         let cur = (s !== undefined) ? s : null;
 		this.userInfo.departement = cur;
-		this.post_update_departement().then((x)=>{
+		this.post_update_departement().then((x) => {
+			this._bInDep = false;
+		}).catch((e) => {
 			this._bInDep = false;
 		});
 	}
@@ -241,7 +249,9 @@ export class BaseModel extends InfoElement {
 			this.userInfo.semestre = s;
 			this.post_update_semestre().then((x) => {
 				this._bInSemestre = false;
-			})
+			}).catch((e) => {
+				this._bInSemestre = false;
+			});
 		}
     }
     public get groupe(): IGroupe {
@@ -256,7 +266,9 @@ export class BaseModel extends InfoElement {
 			this.userInfo.groupe = s;
 			this.post_update_groupe().then((x) => {
 				this._bInGroupe = false;
-			})
+			}).catch((e) => {
+				this._bInGroupe = false;
+			});
 		}
     }
     //
@@ -272,7 +284,9 @@ export class BaseModel extends InfoElement {
 			this._bInMatiere = true;
 			this.post_update_matiere().then((x) => {
 				this._bInMatiere = false;
-			})
+			}).catch((e) => {
+				this._bInMatiere = false;
+			});
 		}
 	}
     public get annee(): IAnnee {
@@ -289,6 +303,8 @@ export class BaseModel extends InfoElement {
 			this._bInAnnee = true;
 			this.userInfo.annee = s;
 			this.post_update_annee().then((x) => {
+				this._bInAnnee = false;
+			}).catch((e) => {
 				this._bInAnnee = false;
 			});
 		}
@@ -307,6 +323,8 @@ export class BaseModel extends InfoElement {
 			this._bInUnite = true;
 			this.userInfo.unite = s;
 			this.post_update_unite().then((xx) => {
+				this._bInUnite = false;
+			}).catch((e) => {
 				this._bInUnite = false;
 			});
 		}

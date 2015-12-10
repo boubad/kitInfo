@@ -83,13 +83,15 @@ export class EnseignantAffectationsModel extends AffectationViewModel<IEnseignan
 			return true;
 		})
     }
-	 protected post_update_unite(): Promise<any> {
-        if ((this.matiere == null) && (this.matieres.length > 0)){
+	 protected post_update_unite(): Promise<boolean> {
+		 return super.post_update_unite().then((r)=>{
+			  if ((this.matiere == null) && (this.matieres.length > 0)){
 				this.matiere = this.matieres[0];
 			}
 		return Promise.resolve(true);
+		 });
     }
-	 protected post_update_annee(): Promise<any> {
+	 protected post_update_annee(): Promise<boolean> {
         if ((this.annee == null) && (this.annees.length > 0)){
 				this.annee = this.annees[0];
 			}
