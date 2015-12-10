@@ -27,25 +27,33 @@ export class BaseGroupeEventListModel extends BaseConsultViewModel<IGroupeEvent>
         });
         return p;
     }// create_item
-    protected post_up_semestre(): Promise<boolean> {
-		if (!this.in_activate){
+    protected post_update_semestre(): Promise<boolean> {
+		return super.post_update_semestre().then((r)=>{
+			if (!this.in_activate){
         return this.refreshAll();
 		} else {
 			return Promise.resolve(true);
 		}
+		});
+		
     }
     protected post_update_matiere(): Promise<boolean> {
-       if (!this.in_activate){
+		return super.post_update_matiere().then((r)=>{
+			  if (!this.in_activate){
         return this.refreshAll();
 		} else {
 			return Promise.resolve(true);
 		}
+		});
     }
     protected post_update_groupe(): Promise<boolean> {
-       if (!this.in_activate){
+		return super.post_update_groupe().then((r)=>{
+			if (!this.in_activate){
         return this.refreshAll();
 		} else {
 			return Promise.resolve(true);
 		}
+		});
+       
     }
 }// class BaseGroupeEventListModel

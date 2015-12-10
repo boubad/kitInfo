@@ -102,14 +102,12 @@ export class GroupesModel extends DepSigleNameViewModel<IGroupe> {
 			return oRet;
 		});
 	}//get_departement_groupes
-	public post_change_departement(): Promise<any> {
-		let self = this;
-		let service = this.dataService;
-		return super.post_change_departement().then((b) => {
+	protected post_update_departement(): Promise<boolean> {
+		return super.post_update_departement().then((b) => {
 			return this.get_departement_groupes();
 		}).then((gg: IGroupe[]) => {
-			self.all_children = ((gg !== undefined) && (gg !== null)) ? gg : [];
-			self.check_groupes();
+			this.all_children = ((gg !== undefined) && (gg !== null)) ? gg : [];
+			this.check_groupes();
 			return true;
 		});
     }

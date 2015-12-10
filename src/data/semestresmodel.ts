@@ -30,13 +30,15 @@ export class SemestresModel extends IntervalledViewModel<ISemestre> {
         return (this.anneeid !== null);
     }
 	protected post_update_annee():Promise<boolean>{
-		 this.modelItem.anneeid = this.anneeid;
+		return super.post_update_annee().then((r)=>{
+			 this.modelItem.anneeid = this.anneeid;
         this.currentItem = this.create_item();
 		if (!this.in_activate){
         	return this.refreshAll();
 		} else {
 			return Promise.resolve(false);
 		}
+		});
 	}
 	protected perform_activate():Promise<any> {
 		return super.perform_activate().then((r)=>{

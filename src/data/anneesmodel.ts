@@ -13,9 +13,17 @@ export class AnneesModel extends IntervalledViewModel<IAnnee> {
 	 protected is_refresh(): boolean {
         return (this.departementid !== null);
     }
-    public post_change_departement(): Promise<any> {
-        this.modelItem.departementid = this.departementid;
+    protected post_update_departement(): Promise<boolean> {
+		return super.post_update_departement().then((r)=>{
+			this.modelItem.departementid = this.departementid;
         this.currentItem = this.create_item();
+		if (!this.in_activate){
+			return this.refreshAll();
+		} else {
+			return Promise.resolve(true);
+		}
+		})
+        
         return this.refreshAll();
     }
 	protected perform_activate():Promise<any> {

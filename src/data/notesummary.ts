@@ -7,16 +7,16 @@ import {EVT_NOTE} from './infoconstants';
 //
 export class EtudiantNotesSummary extends BaseEtudiantSumary {
 	//
-	private _matieresCoefs:Map<string,Map<string, number>>;
-	private _unitesCoefs:Map<string,Map<string, number>>;
-	private _matieresSigles:Map<string,Map<string, string>>;
-	private _unitesSigles:Map<string,Map<string, string>>;
-	private _matieresUnites:Map<string,string>;
+	private _matieresCoefs: Map<string, Map<string, number>>;
+	private _unitesCoefs: Map<string, Map<string, number>>;
+	private _matieresSigles: Map<string, Map<string, string>>;
+	private _unitesSigles: Map<string, Map<string, string>>;
+	private _matieresUnites: Map<string, string>;
 	//
-	private _detailNotes:Map<string, SummaryItemMap>;
-	private _matieresNotes:Map<string, SummaryItemMap>;
-	private _unitesNotes:Map<string, SummaryItemMap>;
-	private _totalNotes:Map<string, SummaryItem>;
+	private _detailNotes: Map<string, SummaryItemMap>;
+	private _matieresNotes: Map<string, SummaryItemMap>;
+	private _unitesNotes: Map<string, SummaryItemMap>;
+	private _totalNotes: Map<string, SummaryItem>;
 	//
 	private _devoirNotes: SummaryItem[];
 	private _matNotes: SummaryItem[];
@@ -26,12 +26,14 @@ export class EtudiantNotesSummary extends BaseEtudiantSumary {
 	constructor() {
 		super();
 	}// constructor
-	protected post_update_semestre(): Promise<any> {
-		let semid = (this.currentSemestre !== null) ? this.currentSemestre.id : null;
-		this._devoirNotes = this.get_devoirs_notes(semid);
-		this._matNotes = this.get_matieres_notes(semid);
-		this._unNotes = this.get_unites_notes(semid);
-		return Promise.resolve(true);
+	protected post_update_semestre(): Promise<boolean> {
+		return super.post_update_semestre().then((r) => {
+			let semid = (this.currentSemestre !== null) ? this.currentSemestre.id : null;
+			this._devoirNotes = this.get_devoirs_notes(semid);
+			this._matNotes = this.get_matieres_notes(semid);
+			this._unNotes = this.get_unites_notes(semid);
+			return Promise.resolve(true);
+		});
 	}// post_change_semestre
 	//
 	public get devoirsNotes(): SummaryItem[] {
@@ -111,20 +113,20 @@ export class EtudiantNotesSummary extends BaseEtudiantSumary {
 		}
 		let c: number = (evt.coefficient !== null) ? evt.coefficient : 1.0;
 		//
-		if ((this._matieresUnites === undefined) || (this._matieresUnites === null)){
-			this._matieresUnites = new Map<string,string>();
+		if ((this._matieresUnites === undefined) || (this._matieresUnites === null)) {
+			this._matieresUnites = new Map<string, string>();
 		}
-		if (!this._matieresUnites.has(matiereid)){
+		if (!this._matieresUnites.has(matiereid)) {
 			this._matieresUnites.set(matiereid, uniteid);
 		}
 		//
 		if ((this._matieresCoefs === undefined) || (this._matieresCoefs == null)) {
-			this._matieresCoefs = new Map<string,Map<string, number>>();
+			this._matieresCoefs = new Map<string, Map<string, number>>();
 		}
 		if ((this._matieresSigles === undefined) || (this._matieresSigles == null)) {
-			this._matieresSigles = new Map<string,Map<string, string>>();
+			this._matieresSigles = new Map<string, Map<string, string>>();
 		}
-		let mc1:Map<string, number> = null;
+		let mc1: Map<string, number> = null;
 		if (this._matieresCoefs.has(semid)) {
 			mc1 = this._matieresCoefs.get(semid);
 			if (!mc1.has(matiereid)) {
@@ -147,12 +149,12 @@ export class EtudiantNotesSummary extends BaseEtudiantSumary {
 		}
 		//
 		if ((this._unitesCoefs === undefined) || (this._unitesCoefs == null)) {
-			this._unitesCoefs = new Map<string,Map<string, number>>();
+			this._unitesCoefs = new Map<string, Map<string, number>>();
 		}
 		if ((this._unitesSigles === undefined) || (this._unitesSigles == null)) {
-			this._unitesSigles = new Map<string,Map<string, string>>();
+			this._unitesSigles = new Map<string, Map<string, string>>();
 		}
-		let mc2:Map<string, number> = null;
+		let mc2: Map<string, number> = null;
 		if (this._unitesCoefs.has(semid)) {
 			mc2 = this._unitesCoefs.get(semid);
 			if (!mc2.has(uniteid)) {
@@ -179,11 +181,11 @@ export class EtudiantNotesSummary extends BaseEtudiantSumary {
 		}
 		if (this._detailNotes.has(semid)) {
 			let v = this._detailNotes.get(semid);
-			v.add(grpName, n, c, evt.description,grpid);
+			v.add(grpName, n, c, evt.description, grpid);
 		} else {
 			let v = new SummaryItemMap(evt.semestreName);
 			this._detailNotes.set(semid, v);
-			v.add(grpName, n, c, evt.description,grpid);
+			v.add(grpName, n, c, evt.description, grpid);
 		}
 		//
 		if ((this._matieresNotes === undefined) || (this._matieresNotes === null)) {
@@ -218,7 +220,7 @@ export class EtudiantNotesSummary extends BaseEtudiantSumary {
 				let uniteid = self._matieresUnites.get(matiereid);
 				let uniteSigle = ss.get(uniteid);
 				let n = nx.note;
-				mm.add(uniteSigle, n, matierecoef, null,uniteid);
+				mm.add(uniteSigle, n, matierecoef, null, uniteid);
 			}// nx
 		});
 	}// compute_unites_notes
@@ -245,7 +247,7 @@ export class EtudiantNotesSummary extends BaseEtudiantSumary {
 		this._totNotes = this.get_total_notes();
 	}// compute_unites_notes
 	public get_devoirs_notes(semestreid: string): SummaryItem[] {
-		let oRet: SummaryItem[]= [];
+		let oRet: SummaryItem[] = [];
 		if ((semestreid === undefined) || (semestreid === null)) {
 			return oRet;
 		}
@@ -259,7 +261,7 @@ export class EtudiantNotesSummary extends BaseEtudiantSumary {
 		return oRet;
 	}// get_devoirs_notes
 	public get_matieres_notes(semestreid: string): SummaryItem[] {
-		let oRet: SummaryItem[]= [];
+		let oRet: SummaryItem[] = [];
 		if ((semestreid === undefined) || (semestreid === null)) {
 			return oRet;
 		}
@@ -273,7 +275,7 @@ export class EtudiantNotesSummary extends BaseEtudiantSumary {
 		return oRet;
 	}// get_matieres_notes
 	public get_unites_notes(semestreid: string): SummaryItem[] {
-		let oRet: SummaryItem[]= [];
+		let oRet: SummaryItem[] = [];
 		if ((semestreid === undefined) || (semestreid === null)) {
 			return oRet;
 		}

@@ -44,10 +44,10 @@
 									<input class="form-control" type="date" id="endDate" value.bind="allEndDate" min.bind="minDate" max.bind="maxDate" required></input>
 								</div>
 								<div class="btn-group">
-									<a class="btn btn-primary" click.delegate="save()" href="#">
+									<a class="btn btn-primary" show.bind="canSave" click.delegate="save()" href="#">
 										<i class="fa fa-save fa-fw"></i>Ajouter
 									</a>
-									<a class="btn btn-danger" disabled.bind="cannotRemove" click.delegate="remove()" href="#">
+									<a class="btn btn-danger" show.bind="canRemove" click.delegate="remove()" href="#">
 										<i class="fa fa-trash-o fa-fw"></i>Supprimer
 									</a>
 								</div>

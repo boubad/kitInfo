@@ -1,6 +1,6 @@
 //baseetudsumary.ts
 //
-import {IElementDesc,  IEtudiantEvent} from 'infodata';
+import {IElementDesc, IEtudiantEvent} from 'infodata';
 import {ElementDesc} from './elementdesc';
 //
 import {SummaryItem, SummaryItemMap} from './summaryitem';
@@ -11,7 +11,7 @@ export class BaseEtudiantSumary {
 	protected _anneesSigles: Map<string, string>;
 	private _semestreids: Map<string, string>;
 	//
-	private _menuAnnees:IElementDesc[];
+	private _menuAnnees: IElementDesc[];
 	private _menuSemestres: IElementDesc[];
 	//
 	private _currentAnnee: IElementDesc;
@@ -21,9 +21,9 @@ export class BaseEtudiantSumary {
 	constructor() {
 		this._currentAnnee = null;
 		this._currentSemestre = null;
-		this._anneesIds = new Map<string,string>();
-		this._anneesSigles = new Map<string,string>();
-		this._semestreids = new Map<string,string>();
+		this._anneesIds = new Map<string, string>();
+		this._anneesSigles = new Map<string, string>();
+		this._semestreids = new Map<string, string>();
 	}// constructor
 	public reset(): void {
 		this._semestreids = null;
@@ -41,10 +41,11 @@ export class BaseEtudiantSumary {
 	public end_processing(): void {
 	}
 	//
-	protected post_change_semestre(): void {
+	protected post_update_semestre(): Promise<boolean> {
+		return Promise.resolve(true);
 	}// post_change_semestre
 	//
-	public get anneesMenu():IElementDesc[] {
+	public get anneesMenu(): IElementDesc[] {
 		if ((this._menuAnnees === undefined) || (this._menuAnnees === null)) {
 			this._menuAnnees = [];
 			if ((this._anneesIds !== undefined) && (this._anneesIds !== null)) {
@@ -63,8 +64,8 @@ export class BaseEtudiantSumary {
 		return (this._currentAnnee !== undefined) ? this._currentAnnee : null;
 	}
 	public set currentAnnee(s: IElementDesc) {
-		if ((this._anneesIds === undefined) || (this._anneesIds === null)){
-			this._anneesIds = new Map<string,string>();
+		if ((this._anneesIds === undefined) || (this._anneesIds === null)) {
+			this._anneesIds = new Map<string, string>();
 		}
 		this._currentAnnee = (s !== undefined) ? s : null;
 		this._currentSemestre = null;
@@ -93,7 +94,7 @@ export class BaseEtudiantSumary {
 	}
 	public set currentSemestre(s: IElementDesc) {
 		this._currentSemestre = (s !== undefined) ? s : null;
-		this.post_change_semestre();
+		this.post_update_semestre();
 	}
 	//
 	public add_events(evts: IEtudiantEvent[]): void {

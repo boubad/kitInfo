@@ -108,9 +108,15 @@ export class PersonViewModel<T extends IDepartementPerson> extends BaseEditViewM
 			return true;
 		});
 	}// perform_activate
-    public post_change_departement(): Promise<any> {
-           this.modelItem.departementid = this.departementid;
-			return this.refreshAll();
+    protected post_update_departement(): Promise<boolean> {
+		return super.post_update_departement().then((r)=>{
+		 this.modelItem.departementid = this.departementid;
+		 if (!this.in_activate){
+			 return this.refreshAll();
+		 } else {
+			 return Promise.resolve(true);
+		 }	
+		});
     }// post_change_departement
     public get currentPerson(): IPerson {
 		if ((this._current_person === undefined) || (this._current_person === null)) {

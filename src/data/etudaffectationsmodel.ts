@@ -77,35 +77,6 @@ export class EtudaffectationsModel extends AffectationViewModel<IEtudiantAffecta
         });
         return p;
     }
-	/*
-	protected post_update_departement(): Promise<boolean> {
-        return super.post_update_departement().then((r) => {
-			if ((this.departement == null) && (this.departements.length > 0)){
-				this.departement = this.departements[0];
-			}
-			this._groupes = null;
-			if ((this.groupe == null) && (this.groupes.length > 0)){
-				this.groupe = this.groupes[0];
-			}
-			return true;
-		}).then((b)=>{
-			return true;
-		})
-    }
-	protected post_update_groupe(): Promise<boolean> {
-		this._pgroupes = [];
-		this.modelItem.groupeid = this.groupeid;
-		this.currentAffectations = [];
-		return this.get_groupe_parents(this.groupe).then((gg) => {
-			this._pgroupes = ((gg !== undefined) && (gg !== null)) ? gg : [];
-			if (!this.in_activate) {
-			return this.refreshAll();
-		} else {
-			return Promise.resolve(false);
-		}
-		});
-    }
-	*/
 	private save_affectation(p: IEtudiantAffectation): Promise<boolean> {
 		let oRet: boolean = false;
 		return this.dataService.find_item_by_id(p.personid).then((pPers: IPerson) => {

@@ -19,13 +19,15 @@ export class DepSigleNameViewModel<T extends IDepartementSigleNamedItem>
 			departementid:this.departementid};
 	}// prepare_model
     protected post_update_departement(): Promise<boolean> {
-        this.modelItem.departementid = this.departementid;
+		return super.post_update_departement().then((r)=>{
+			this.modelItem.departementid = this.departementid;
         this.currentItem = this.create_item();
 		if (!this.in_activate){
 		return this.refreshAll() ;
 		} else {
 			return Promise.resolve(true);
 		}
+		});
     }
 	protected perform_activate(): Promise<any> {
 		return super.perform_activate().then((r)=>{

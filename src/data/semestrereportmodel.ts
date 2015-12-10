@@ -13,11 +13,13 @@ export class SemestreReportBase extends BaseConsultViewModel<IDisplayEtudiant> {
         super(info);
     }// constructor
     protected post_update_semestre(): Promise<boolean> {
-		if (!this.in_activate) {
-			return this.refreshAll();
-		} else {
-			return Promise.resolve(true);
-		}
+		return super.post_update_semestre().then((r) => {
+			if (!this.in_activate) {
+				return this.refreshAll();
+			} else {
+				return Promise.resolve(true);
+			}
+		});
     }
     protected is_refresh(): boolean {
         return (this.semestreid !== null);

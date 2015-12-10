@@ -2,7 +2,7 @@
 //
 import {UserInfo} from './userinfo';
 import {BaseEditViewModel} from './baseeditmodel';
-import {EVT_NOTE, EVT_ABSENCE, EVT_RETARD, EVT_MISC,GENRE_TP,
+import {EVT_NOTE, EVT_ABSENCE, EVT_RETARD, EVT_MISC, GENRE_TP,
 GVT_EXAM, GVT_CONTROL, GVT_TP, GVT_TD, GVT_PROMO, GVT_MISC, PROFAFFECTATION_TYPE} from './infoconstants';
 import {IEnseignantAffectation, IEtudiantAffectation, IDepartement, IAnnee, ISemestre, IUnite, IMatiere,
 IGroupe,
@@ -599,9 +599,9 @@ export class GroupeEventsModel extends BaseEditViewModel<IGroupeEvent> {
 	}// prepare_model
     protected is_storeable(): boolean {
         if (this.currentItem !== null) {
-			this.currentItem.profaffectationid =  (this.currentProfAffectation !== null) ? this.currentProfAffectation.id : null;
+			this.currentItem.profaffectationid = (this.currentProfAffectation !== null) ? this.currentProfAffectation.id : null;
 			this.currentItem.semestreid = this.semestreid;
-			this.currentItem.matiereid = this.matiereid; 
+			this.currentItem.matiereid = this.matiereid;
 			this.currentItem.personid = this.personid;
 			this.currentItem.firstname = this.person.firstname;
 			this.currentItem.lastname = this.person.lastname;
@@ -611,10 +611,12 @@ export class GroupeEventsModel extends BaseEditViewModel<IGroupeEvent> {
         return super.is_storeable();
     }
     protected post_update_groupe(): Promise<boolean> {
-        this.etudEvents = [];
-        this.etudAffectationModel.groupeid = this.groupeid;
-        this.update_profaffectation();
-        return this.fill_etudaffectations().then((r) => {
+		return super.post_update_groupe().then((r) => {
+			this.etudEvents = [];
+			this.etudAffectationModel.groupeid = this.groupeid;
+			this.update_profaffectation();
+			return this.fill_etudaffectations();
+		}).then((xr) => {
 			if (!this.in_activate) {
 				return this.refreshAll();
 			} else {
@@ -623,10 +625,12 @@ export class GroupeEventsModel extends BaseEditViewModel<IGroupeEvent> {
         });
     }
     protected post_update_semestre(): Promise<boolean> {
-        this.modelItem.semestreid = this.semestreid;
-        this.etudAffectationModel.semestreid = this.semestreid;
-        this.update_profaffectation();
-        return this.fill_etudaffectations().then((r) => {
+		return super.post_update_semestre().then((rx) => {
+			this.modelItem.semestreid = this.semestreid;
+			this.etudAffectationModel.semestreid = this.semestreid;
+			this.update_profaffectation();
+			return this.fill_etudaffectations();
+		}).then((r) => {
 			if (!this.in_activate) {
 				return this.refreshAll();
 			} else {
@@ -635,13 +639,15 @@ export class GroupeEventsModel extends BaseEditViewModel<IGroupeEvent> {
         });
     }
     protected post_update_matiere(): Promise<boolean> {
-        this.modelItem.matiereid = this.matiereid;
-        this.update_profaffectation();
-		if (!this.in_activate) {
-			return this.refreshAll();
-		} else {
-			return Promise.resolve(true);
-		}
+		return super.post_update_matiere().then((rx) => {
+			this.modelItem.matiereid = this.matiereid;
+			this.update_profaffectation();
+			if (!this.in_activate) {
+				return this.refreshAll();
+			} else {
+				return Promise.resolve(true);
+			}
+		});
     }
     protected post_change_item(): Promise<any> {
         return super.post_change_item().then((r) => {

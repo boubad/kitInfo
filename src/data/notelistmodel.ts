@@ -9,18 +9,30 @@ import {EVT_NOTE} from './infoconstants';
 export class NoteListModel extends BaseConsultViewModel<IDisplayEtudiant> {
     //
     private _all_data: IDisplayEtudiant[] = [];
-	private _evtModel:IEtudiantEvent;
+	private _evtModel: IEtudiantEvent;
     //
     constructor(userinfo: UserInfo) {
         super(userinfo);
         this.title = 'Notes Semestres';
 		this._evtModel = this.itemFactory.create_etudiantevent();
     }// constructor
-    protected post_change_semestre(): Promise<any> {
-        return this.refreshAll();
+    protected post_update_semestre(): Promise<boolean> {
+		return super.post_update_semestre().then((r) => {
+			if (!this.in_activate) {
+				return this.refreshAll();
+			} else {
+				return true;
+			}
+		});
     }
-    protected post_change_matiere(): Promise<any> {
-        return this.refreshAll();
+    protected post_update_matiere(): Promise<boolean> {
+		return super.post_update_matiere().then((r) => {
+			if (!this.in_activate) {
+				return this.refreshAll();
+			} else {
+				return true;
+			}
+		});
     }
     protected is_refresh(): boolean {
         return (this.semestre !== null) && (this.matiere !== null);
@@ -51,15 +63,15 @@ export class NoteListModel extends BaseConsultViewModel<IDisplayEtudiant> {
         }// pp
         return Promise.resolve(oRet);
     }// transformData
-	private get_semestre_matiere_notes(): Promise<IEtudiantEvent[]>{
-		let oRet:IEtudiantEvent[] = [];
+	private get_semestre_matiere_notes(): Promise<IEtudiantEvent[]> {
+		let oRet: IEtudiantEvent[] = [];
 		return this.dataService.query_items(this._evtModel.type(),
-		{semestreid:this.semestreid,matiereid:this.matiereid,genre:EVT_NOTE}).then((xx:IEtudiantEvent[])=>{
-			oRet = ((xx !== undefined) && (xx !== null)) ? xx : [];
-			return oRet;
-		}).catch((e)=>{
-			return oRet;
-		});
+			{ semestreid: this.semestreid, matiereid: this.matiereid, genre: EVT_NOTE }).then((xx: IEtudiantEvent[]) => {
+				oRet = ((xx !== undefined) && (xx !== null)) ? xx : [];
+				return oRet;
+			}).catch((e) => {
+				return oRet;
+			});
 	}//get_semestre_matiere_notes
     public refreshAll(): Promise<any> {
         this.prepare_refresh();
