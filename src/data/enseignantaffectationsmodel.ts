@@ -79,9 +79,7 @@ export class EnseignantAffectationsModel extends AffectationViewModel<IEnseignan
 				this.annee = this.annees[0];
 			}
 			return true;
-		}).then((b)=>{
-			return true;
-		})
+		});
     }
 	 protected post_update_unite(): Promise<boolean> {
 		 return super.post_update_unite().then((r)=>{
@@ -92,19 +90,23 @@ export class EnseignantAffectationsModel extends AffectationViewModel<IEnseignan
 		 });
     }
 	 protected post_update_annee(): Promise<boolean> {
-        if ((this.annee == null) && (this.annees.length > 0)){
+		return super.post_update_annee().then((r)=>{
+			 if ((this.annee == null) && (this.annees.length > 0)){
 				this.annee = this.annees[0];
 			}
 		return Promise.resolve(true);
+		});
     }
     protected post_update_matiere(): Promise<any> {
-        this.modelItem.matiereid = this.matiereid;
+		return super.post_update_matiere().then((r)=>{
+			this.modelItem.matiereid = this.matiereid;
         this.currentAffectations = [];
 		if (!this.in_activate){
 			return this.refreshAll();
 		} else {
 			return Promise.resolve(true);
 		}
+		});
     }
     protected is_refresh(): boolean {
         return super.is_refresh() && (this.modelItem.matiereid !== null);
@@ -112,17 +114,11 @@ export class EnseignantAffectationsModel extends AffectationViewModel<IEnseignan
     //
 	protected perform_activate(): Promise<any> {
 		return super.perform_activate().then((r) => {
-			if ((this.departement == null) && (this.departements.length > 0)){
-				this.departement = this.departements[0];
-			}
-			if ((this.groupe == null) && (this.groupes.length > 0)){
-				this.groupe = this.groupes[0];
-			}
 			if ((this.unite == null) && (this.unites.length > 0)){
 				this.unite = this.unites[0];
 			}
-			if ((this.annee == null) && (this.annees.length > 0)){
-				this.annee = this.annees[0];
+			if ((this.matiere == null) && (this.matieres.length > 0)){
+				this.matiere = this.matieres[0];
 			}
 			return true;
 		});

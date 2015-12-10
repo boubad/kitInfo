@@ -105,34 +105,46 @@ export class AffectationViewModel<T extends IAffectation, P extends IDepartement
     }
     //
 	protected post_update_departement(): Promise<boolean> {
-        this.currentPersons = [];
-        this.persons = [];
-		let id = this.departementid;
-		this.personModel.departementid = id;
-		if (id === null) {
-			return Promise.resolve(false);
-		}
-		return this.dataService.query_items(this.personModel.type(), { departementid: id }).then((pp: P[]) => {
+		return super.post_update_departement().then((r) => {
+			this.currentPersons = [];
+			this.persons = [];
+			let id = this.departementid;
+			this.personModel.departementid = id;
+			return this.dataService.query_items(this.personModel.type(), { departementid: id });
+		}).then((pp: P[]) => {
 			this.persons = ((pp !== undefined) && (pp !== null)) ? pp : [];
 			return true;
 		});
+
     }// post_change_departement
     protected post_update_groupe(): Promise<any> {
-		this.modelItem.groupeid = this.groupeid;
-		this.currentAffectations = [];
-		return this.refreshAll();
+		return super.post_update_groupe().then((r) => {
+			this.modelItem.groupeid = this.groupeid;
+			this.currentAffectations = [];
+			if (!this.in_activate) {
+				return this.refreshAll();
+			} else {
+				return true;
+			}
+		});
     }
     protected post_update_semestre(): Promise<boolean> {
-		this.modelItem.semestreid = this.semestreid;
-		this.currentAffectations = [];
-		this._start = null;
-		this._end = null;
-		let sem = this.semestre;
-		if (sem !== null) {
-			this._start = sem.startDate;
-			this._end = sem.endDate;
-		}
-		return this.refreshAll();
+		return super.post_update_semestre().then((r) => {
+			this.modelItem.semestreid = this.semestreid;
+			this.currentAffectations = [];
+			this._start = null;
+			this._end = null;
+			let sem = this.semestre;
+			if (sem !== null) {
+				this._start = sem.startDate;
+				this._end = sem.endDate;
+			}
+			if (!this.in_activate) {
+				return this.refreshAll();
+			} else {
+				return true;
+			}
+		});
     }
 	protected perform_get_groupes(): IGroupe[] {
 		return this.groupes;
@@ -203,17 +215,20 @@ export class AffectationViewModel<T extends IAffectation, P extends IDepartement
     }// refreshAll
 	protected perform_activate(): Promise<any> {
 		return super.perform_activate().then((r) => {
-			if ((this.departement == null) && (this.departements.length > 0)){
+			if ((this.departement == null) && (this.departements.length > 0)) {
 				this.departement = this.departements[0];
 			}
 			let id = this.departementid;
 			return this.dataService.query_items(this.personModel.type(), { departementid: id });
 		}).then((pp: P[]) => {
 			this.persons = ((pp !== undefined) && (pp !== null)) ? pp : [];
-			if ((this.semestre == null) && (this.semestres.length > 0)){
+			if ((this.annee == null) && (this.annees.length > 0)) {
+				this.annee = this.annees[0];
+			}
+			if ((this.semestre == null) && (this.semestres.length > 0)) {
 				this.semestre = this.semestres[0];
 			}
-			if ((this.groupe == null) && (this.groupes.length > 0)){
+			if ((this.groupe == null) && (this.groupes.length > 0)) {
 				this.groupe = this.groupes[0];
 			}
 			return true;

@@ -126,9 +126,8 @@ export class EtudaffectationsModel extends AffectationViewModel<IEtudiantAffecta
 		});
 	}// save_affectation
 	protected perform_activate(): Promise<any> {
-		return super.perform_activate().then((r) => {
-			this._groupes = null;
-		});
+		this._groupes = null;
+		return super.perform_activate();
 	}
 	protected get_groupes(): IGroupe[] {
 		if ((this._groupes !== undefined) && (this._groupes !== null) && (this._groupes.length > 0)) {
