@@ -23,6 +23,9 @@ export class Groupe extends DepartementSigleNamedItem implements IGroupe {
 			}
 		}// oMap
 	}
+	public get is_leaf():boolean {
+		return ((this.genre !== null) && (this.genre == GENRE_TP));
+	}
 	public add_child(g: IGroupe): void {
 		let genre1 = this.genre;
 		if ((genre1 === undefined) || (genre1 === null)) {

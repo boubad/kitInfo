@@ -71,6 +71,7 @@ declare module 'infodata' {
         childrenids: string[];
         has_children: boolean;
         has_parent: boolean;
+		is_leaf:boolean;
         //
         add_child: (g: IGroupe) => void;
         remove_child: (g: IGroupe) => boolean;
