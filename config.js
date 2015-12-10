@@ -1,4 +1,3 @@
-/* global System */
 System.config({
   baseURL: ".",
   defaultJSExtensions: true,
