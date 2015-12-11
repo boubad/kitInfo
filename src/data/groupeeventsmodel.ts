@@ -848,6 +848,9 @@ export class GroupeEventsModel extends BaseEditViewModel<IGroupeEvent> {
         }
         this.clear_error();
         return Promise.all(oRet).then((rr) => {
+			 for (let aa of oRet) {
+                aa.selected = false;
+            }
             return this.fill_notes();
         }).catch((err) => {
             this.set_error(err)

@@ -197,6 +197,7 @@ declare module 'infodata' {
         uniteName?: string;
 		semestreMinDate?: Date;
 		semestreMaxDate?: Date;
+		dateString?:string;
     }
     export interface IGroupeEvent extends IInfoEvent {
         profaffectationid: string;

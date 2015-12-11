@@ -180,6 +180,9 @@ export class InfoEvent extends PersonItem implements IInfoEvent {
 	public get coefficient(): number {
         return ((this._coef !== undefined) && (this._coef !== null) && (this._coef > 0)) ? this._coef : 1.0;
     }
+	public get dateString():string {
+		return this.date_to_string(this.eventDate);
+	}
     public set coefficient(s: number) {
         let d = this.check_number(s);
         if ((d !== null) && (d > 0)) {
