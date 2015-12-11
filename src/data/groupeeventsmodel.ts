@@ -60,6 +60,9 @@ export class GroupeEventsModel extends BaseEditViewModel<IGroupeEvent> {
         this._editMode = true;
         this._bBusy = false;
     }// constructor
+	protected get_groupes(): IGroupe[] {
+		return (this.userInfo !== null) ? this.userInfo.groupes : [];
+	}
 	public get evtMode(): boolean {
 		return ((this._evtMode !== undefined) && (this._evtMode !== null)) ?
 			this._evtMode && this.is_connected : false;

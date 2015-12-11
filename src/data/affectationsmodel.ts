@@ -146,9 +146,6 @@ export class AffectationViewModel<T extends IAffectation, P extends IDepartement
 			}
 		});
     }
-	protected perform_get_groupes(): IGroupe[] {
-		return this.groupes;
-	}
     public get canRemove(): boolean {
         return ((this.currentAffectations !== null) && (this.currentAffectations.length > 0));
     }// canRemove

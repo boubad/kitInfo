@@ -35,7 +35,6 @@ export class BaseGroupeEventListModel extends BaseConsultViewModel<IGroupeEvent>
 			return Promise.resolve(true);
 		}
 		});
-		
     }
     protected post_update_matiere(): Promise<boolean> {
 		return super.post_update_matiere().then((r)=>{

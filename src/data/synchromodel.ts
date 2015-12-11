@@ -45,7 +45,8 @@ export class SynchroModel extends BaseView {
     }
 
     public get canRemoveServer(): boolean {
-        return (this.currentServer !== null) && (this.currentServer.trim().length > 0);
+        return (this.currentServer !== null) && (this.currentServer.trim().length > 0) &&
+			this.canImport && this.canExport;
     }
     public get cannotRemoveServer(): boolean {
         return (!this.canRemoveServer);
@@ -57,7 +58,8 @@ export class SynchroModel extends BaseView {
     }// removeServer
     //
     public get canAddServer(): boolean {
-        return (this.candidateServer !== null) && (this.candidateServer.trim().length > 0);
+        return (this.candidateServer !== null) && (this.candidateServer.trim().length > 0) &&
+			this.canImport && this.canExport;
     }
     public get cannotAddServer(): boolean {
         return (!this.canAddServer);

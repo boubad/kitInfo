@@ -43,7 +43,7 @@ export class App  extends BaseView {
 			{ route: 'etud/:id', name: ETUDDETAIL_ROUTE, moduleId: './consult/etudiant-summary', nav: false },
 			{ route: 'etudevt/:id', name: ETUDEVTDETAIL_ROUTE, moduleId: './consult/etudevent-detail', nav: false },
 			{ route: 'attacheddoc/:id', name: 'attacheddoc', moduleId: './consult/attacheddocs', nav: false },
-			{ route: 'grpevt/:id', name: 'grpevt', moduleId: './consult/groupeeventdetail', nav: false }
+			{ route: 'grpevt/:id', name: 'grpevt', moduleId: './consult/groupeevent-detail', nav: false }
 			/*
 			{ route: 'etudnotes/:id', name: 'etudnotes', moduleId: './consult/etudiant-notes', nav: false },
 			

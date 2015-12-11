@@ -34,7 +34,7 @@ export class SigleNamedItem extends BaseItem implements ISigleNamedItem {
 	//
 	public create_id(): string {
 		let s1: string = this.start_key();
-        let s2: string = this.sigle;
+        let s2: string = this.prepare_string(this.sigle);
         if (s1 == null) {
             s1 = "";
         }

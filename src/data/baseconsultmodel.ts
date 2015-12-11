@@ -79,6 +79,7 @@ export class BaseConsultViewModel<T extends IBaseItem> extends BaseView {
 	//
 	protected get_all_ids(): Promise<string[]> {
 		let sel: any = this.prepare_model();
+		sel.type = this.create_item().type();
 		return this.dataService.query_ids(sel);
 	}// get_all_ids
 	//

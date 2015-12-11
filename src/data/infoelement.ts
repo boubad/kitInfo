@@ -127,6 +127,31 @@ export class InfoElement implements IInfoElement {
     protected format_note(s: number): number {
         return (Math.floor(s * 100.0 + 0.5)) / 100.0;
     }
+	protected prepare_string(s: string,bUpper?:boolean): string {
+		let sRet: string = null;
+		if ((s !== undefined) && (s !== null)) {
+			sRet = s.trim();
+			if (sRet.length < 1) {
+				sRet = null;
+			} else {
+				sRet = sRet.toLowerCase();
+				sRet = sRet.replace(" ", "");
+				sRet = sRet.replace("'", "");
+				sRet = sRet.replace("é", "e");
+				sRet = sRet.replace("è", "e");
+				sRet = sRet.replace("à", "a");
+				sRet = sRet.replace("ç", "c");
+				sRet = sRet.replace("î", "i");
+				sRet = sRet.replace("ô", "o");
+				sRet = sRet.replace("û", "u");
+				sRet = sRet.replace("â", "a");
+				if ((bUpper !== undefined) && (bUpper !== null) && (bUpper == true)){
+					sRet = sRet.toUpperCase();
+				}
+			}
+		}
+		return ((sRet !== undefined) && (sRet !== null) && (sRet.length > 1)) ? sRet : null;
+	}// prepare_string
 	protected create_username(slast: string, sfirst: string): string {
         let sRet: string = null;
         if ((slast !== undefined) && (slast !== null)) {
@@ -145,14 +170,7 @@ export class InfoElement implements IInfoElement {
                 sRet = sRet + us;
             }
         }
-        if ((sRet !== null) && (sRet.length < 1)) {
-            sRet = null;
-        }
-		if (sRet !== null){
-			sRet = sRet.replace(" ","");
-			sRet = sRet.replace("'","");
-		}
-        return sRet;
+		return this.prepare_string(sRet);
     }// create_username
 	protected create_date_key(d: Date): string {
 		let sRet: string = null;

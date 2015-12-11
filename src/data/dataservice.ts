@@ -99,72 +99,72 @@ export class DataService extends InfoElement implements IDataService {
 	}
 	//
 	//
-	public query_items(xtype:string,selector?:any,skip?:number,limit?:number) : Promise<IBaseItem[]>{
-		let oRet:IBaseItem[] = [];
-		if ((xtype === undefined)|| (xtype === null)){
+	public query_items(xtype: string, selector?: any, skip?: number, limit?: number): Promise<IBaseItem[]> {
+		let oRet: IBaseItem[] = [];
+		if ((xtype === undefined) || (xtype === null)) {
 			return Promise.resolve(oRet);
 		}
-		if (xtype.trim().length < 1){
+		if (xtype.trim().length < 1) {
 			return Promise.resolve(oRet);
 		}
-		let xsel:any = {type: xtype};
-		if ((selector !== undefined) && (selector !== null)){
-			for  (let key in selector){
+		let xsel: any = { type: xtype };
+		if ((selector !== undefined) && (selector !== null)) {
+			for (let key in selector) {
 				let skey = key.toString();
-				if ((skey != "type") && (skey != "_id") && (skey != "_rev") && (skey != "_deleted") && (skey != "_attachments")){
+				if ((skey != "type") && (skey != "_id") && (skey != "_rev") && (skey != "_deleted") && (skey != "_attachments")) {
 					let val = selector[key];
 					if ((val !== undefined) && (val !== null)) {
-						if (val.toString().length > 0){
-					xsel[key] = val;
+						if (val.toString().length > 0) {
+							xsel[key] = val;
 						}
 					}
 				}// skey
 			}// key
 		}
-		return this.service.query_docs(xsel,skip,limit).then((dd)=>{
-			if ((dd !== undefined) && (dd !== null)){
-				for (let doc of dd){
+		return this.service.query_docs(xsel, skip, limit).then((dd) => {
+			if ((dd !== undefined) && (dd !== null)) {
+				for (let doc of dd) {
 					let item = this.itemFactory.create_item(doc);
-					if (item !== null){
+					if (item !== null) {
 						oRet.push(item);
 					}
 				}// doc
 			}// dd
 			this.sort_array(oRet);
 			return oRet;
-		}).catch((e)=>{
+		}).catch((e) => {
 			return oRet;
 		});
 	}// query_items
-	public query_by_template(temp:IBaseItem,skip?:number,limit?:number) : Promise<IBaseItem[]>{
-		let oRet:IBaseItem[] = [];
-		if ((temp === undefined)|| (temp === null)){
+	public query_by_template(temp: IBaseItem, skip?: number, limit?: number): Promise<IBaseItem[]> {
+		let oRet: IBaseItem[] = [];
+		if ((temp === undefined) || (temp === null)) {
 			return Promise.resolve(oRet);
 		}
-		let xtype:string = temp.type();
-		if (xtype.trim().length < 1){
+		let xtype: string = temp.type();
+		if (xtype.trim().length < 1) {
 			return Promise.resolve(oRet);
 		}
-		let xsel:any = {};
+		let xsel: any = {};
 		temp.to_map(xsel);
-		return this.query_items(xtype,xsel,skip,limit);
+		return this.query_items(xtype, xsel, skip, limit);
 	}// query_by_template
 	//
-	public query_ids(selector?:any,skip?:number, limit?:number) : Promise<string[]>{
-		let oRet:string[] = [];
-		if ((selector === undefined)|| (selector === null)){
+	public query_ids(selector?: any, skip?: number, limit?: number): Promise<string[]> {
+		let oRet: string[] = [];
+		if ((selector === undefined) || (selector === null)) {
 			return Promise.resolve(oRet);
 		}
-		return this.service.query_docs(selector,skip,limit,["_id"]).then((dd)=>{
-			if ((dd !== undefined) && (dd !== null)){
-				for (let doc of dd){
-					if ((doc._id !== undefined) && (doc._id !== null)){
+		return this.service.query_docs(selector, skip, limit, ["_id"]).then((dd) => {
+			if ((dd !== undefined) && (dd !== null)) {
+				for (let doc of dd) {
+					if ((doc._id !== undefined) && (doc._id !== null)) {
 						oRet.push(doc._id);
 					}
 				}// doc
 			}// dd
 			return oRet;
-		}).catch((e)=>{
+		}).catch((e) => {
 			return oRet;
 		});
 	}// query_items
@@ -242,7 +242,7 @@ export class DataService extends InfoElement implements IDataService {
 		if ((ids === undefined) || (ids === null)) {
 			return Promise.resolve(oRet);
 		}
-		if (ids.length < 1){
+		if (ids.length < 1) {
 			return Promise.resolve(oRet);
 		}
 		let fact = this.itemFactory;
@@ -364,11 +364,8 @@ export class DataService extends InfoElement implements IDataService {
 			let pPers: IPerson = null;
 			pPers = ((px !== undefined) && (px !== null)) ? px : null;
 			if (pPers !== null) {
-				if (p.check_person(pPers)) {
-					this.perform_save(pPers);
-				} else {
-					return Promise.resolve(true);
-				}
+				p.check_person(pPers);
+				return this.perform_save(pPers);
 			} else {
 				return Promise.resolve(true);
 			}
