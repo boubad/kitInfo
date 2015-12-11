@@ -23,7 +23,7 @@ export class BaseGroupeEventListModel extends BaseConsultViewModel<IGroupeEvent>
         let p = this.itemFactory.create_groupeevent({
             matiereid: this.matiereid,
             semestreid: this.semestreid,
-            groupeid: this.groupeid,
+            groupeid: this.groupeid
         });
         return p;
     }// create_item
