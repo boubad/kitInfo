@@ -1,11 +1,11 @@
 //infoevent.ts
-import {IInfoEvent,IPerson} from 'infodata';
+import {IInfoEvent, IPerson} from 'infodata';
 import {PersonItem} from './personitem';
 //
 export class InfoEvent extends PersonItem implements IInfoEvent {
 	private _semestreid: string;
 	private _matiereid: string;
-	private _groupeid: string ;
+	private _groupeid: string;
 	private _genre: string;
 	private _matiereName: string;
 	private _groupeName: string;
@@ -18,8 +18,8 @@ export class InfoEvent extends PersonItem implements IInfoEvent {
 	private _uniteid: string;
 	private _uniteCoefficient: number;
 	private _uniteName: string;
-	private _semestreMinDate:Date;
-	private _semestreMaxDate:Date;
+	private _semestreMinDate: Date;
+	private _semestreMaxDate: Date;
 	//
 	constructor(oMap?: any) {
 		super(oMap);
@@ -69,106 +69,106 @@ export class InfoEvent extends PersonItem implements IInfoEvent {
 			if (oMap.uniteName !== undefined) {
 				this.uniteName = oMap.uniteName;
 			}
-			if (oMap.semestreMinDate !== undefined){
+			if (oMap.semestreMinDate !== undefined) {
 				this.semestreMinDate = oMap.semestreMinDate;
 			}
-			if (oMap.semestreMaxDate !== undefined){
+			if (oMap.semestreMaxDate !== undefined) {
 				this.semestreMaxDate = oMap.semestreMaxDate;
 			}
 		} // oMap
 	}
-	public get semestreMaxDate():Date {
+	public get semestreMaxDate(): Date {
 		return (this._semestreMaxDate !== undefined) ? this._semestreMaxDate : null;
 	}
-	public set semestreMaxDate(s:Date){
+	public set semestreMaxDate(s: Date) {
 		this._semestreMaxDate = this.check_date(s);
 	}
-	public get semestreMinDate():Date {
+	public get semestreMinDate(): Date {
 		return (this._semestreMinDate !== undefined) ? this._semestreMinDate : null;
 	}
-	public set semestreMinDate(s:Date){
+	public set semestreMinDate(s: Date) {
 		this._semestreMinDate = this.check_date(s);
 	}
-	public get uniteName():string {
+	public get uniteName(): string {
 		return (this._uniteName !== undefined) ? this._uniteName : null;
 	}
-	public set uniteName(s:string){
+	public set uniteName(s: string) {
 		this._uniteName = this.check_string(s);
 	}
-	public get uniteid():string {
+	public get uniteid(): string {
 		return (this._uniteid !== undefined) ? this._uniteid : null;
 	}
-	public set uniteid(s:string){
+	public set uniteid(s: string) {
 		this._uniteid = this.check_string(s);
 	}
-	public get uniteCoefficient():number {
+	public get uniteCoefficient(): number {
 		return ((this._uniteCoefficient !== undefined) &&
-		(this._uniteCoefficient !== null) && (this._uniteCoefficient > 0.0)) ? 
-		this._uniteCoefficient : 1.0;
+			(this._uniteCoefficient !== null) && (this._uniteCoefficient > 0.0)) ?
+			this._uniteCoefficient : 1.0;
 	}
-	public set uniteCoefficient(s:number){
+	public set uniteCoefficient(s: number) {
 		this._uniteCoefficient = this.check_number(s);
 	}
-	public get matiereCoefficient():number {
+	public get matiereCoefficient(): number {
 		return ((this._matiereCoefficient !== undefined) &&
-		(this._matiereCoefficient !== null) && (this._matiereCoefficient > 0.0)) ? 
-		this._matiereCoefficient : 1.0;
+			(this._matiereCoefficient !== null) && (this._matiereCoefficient > 0.0)) ?
+			this._matiereCoefficient : 1.0;
 	}
-	public set matiereCoefficient(s:number){
+	public set matiereCoefficient(s: number) {
 		this._matiereCoefficient = this.check_number(s);
 	}
-	public get anneeName():string {
+	public get anneeName(): string {
 		return (this._anneeName !== undefined) ? this._anneeName : null;
 	}
-	public set anneeName(s:string){
+	public set anneeName(s: string) {
 		this._anneeName = this.check_string(s);
 	}
-	public get anneeid():string {
+	public get anneeid(): string {
 		return (this._anneeid !== undefined) ? this._anneeid : null;
 	}
-	public set anneeid(s:string){
+	public set anneeid(s: string) {
 		this._anneeid = this.check_string(s);
 	}
-	public get semestreName():string {
+	public get semestreName(): string {
 		return (this._semestreName !== undefined) ? this._semestreName : null;
 	}
-	public set semestreName(s:string){
+	public set semestreName(s: string) {
 		this._semestreName = this.check_string(s);
 	}
-	public get groupeName():string {
+	public get groupeName(): string {
 		return (this._groupeName !== undefined) ? this._groupeName : null;
 	}
-	public set groupeName(s:string){
+	public set groupeName(s: string) {
 		this._groupeName = this.check_string(s);
 	}
-	public get matiereName():string {
+	public get matiereName(): string {
 		return (this._matiereName !== undefined) ? this._matiereName : null;
 	}
-	public set matiereName(s:string){
+	public set matiereName(s: string) {
 		this._matiereName = this.check_string(s);
 	}
-	public get genre():string {
+	public get genre(): string {
 		return (this._genre !== undefined) ? this._genre : null;
 	}
-	public set genre(s:string){
+	public set genre(s: string) {
 		this._genre = this.check_upper_string(s);
 	}
-	public get groupeid():string {
+	public get groupeid(): string {
 		return (this._groupeid !== undefined) ? this._groupeid : null;
 	}
-	public set groupeid(s:string){
+	public set groupeid(s: string) {
 		this._groupeid = this.check_string(s);
 	}
-	public get matiereid():string {
+	public get matiereid(): string {
 		return (this._matiereid !== undefined) ? this._matiereid : null;
 	}
-	public set matiereid(s:string){
+	public set matiereid(s: string) {
 		this._matiereid = this.check_string(s);
 	}
-	public get semestreid():string {
+	public get semestreid(): string {
 		return (this._semestreid !== undefined) ? this._semestreid : null;
 	}
-	public set semestreid(s:string){
+	public set semestreid(s: string) {
 		this._semestreid = this.check_string(s);
 	}
 	public get eventDate(): Date {
@@ -180,7 +180,7 @@ export class InfoEvent extends PersonItem implements IInfoEvent {
 	public get coefficient(): number {
         return ((this._coef !== undefined) && (this._coef !== null) && (this._coef > 0)) ? this._coef : 1.0;
     }
-	public get dateString():string {
+	public get dateString(): string {
 		return this.date_to_string(this.eventDate);
 	}
     public set coefficient(s: number) {
@@ -239,10 +239,10 @@ export class InfoEvent extends PersonItem implements IInfoEvent {
 			if (this.genre !== null) {
 				oMap.genre = this.genre;
 			}
-			if (this.semestreMinDate !== null){
+			if (this.semestreMinDate !== null) {
 				oMap.semestreMinDate = this.semestreMinDate;
 			}
-			if (this.semestreMaxDate !== null){
+			if (this.semestreMaxDate !== null) {
 				oMap.semestreMaxDate = this.semestreMaxDate;
 			}
 		}// oMap
@@ -295,14 +295,18 @@ export class InfoEvent extends PersonItem implements IInfoEvent {
             } else if (t1 < t2) {
                 return 1;
             } else {
-                return 0;
+                let s1: string = (p1.fullname !== null) ? p1.fullname : "";
+				let s2: string = (p2.fullname !== null) ? p2.fullname : "";
+				return s1.localeCompare(s2);
             }
         } else if ((d1 === null) && (d2 !== null)) {
             return 1;
         } else if ((d1 !== null) && (d2 === null)) {
             return -1;
         } else {
-            return 0;
+            let s1: string = (p1.fullname !== null) ? p1.fullname : "";
+			let s2: string = (p2.fullname !== null) ? p2.fullname : "";
+			return s1.localeCompare(s2);
         }
     } // sort_func
 }// class InfoEvent

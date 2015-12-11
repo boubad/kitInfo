@@ -273,7 +273,7 @@ export class DisplayEtudiant extends BaseItem implements IDisplayEtudiant {
         return ((this.lastname !== null) && (this.firstname !== null)) ?
             (this.lastname + ' ' + this.firstname) : null;
     } // fullname
-    public static sort_func(p1: IDisplayEtudiant, p2: IDisplayEtudiant): number {
+    public  sort_func(p1: IDisplayEtudiant, p2: IDisplayEtudiant): number {
         let s1 = p1.fullname;
         let s2 = p2.fullname;
         if ((s1 !== null) && (s2 !== null)) {

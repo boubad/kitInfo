@@ -79,18 +79,18 @@ export class NoteListModel extends BaseConsultViewModel<IDisplayEtudiant> {
             return Promise.resolve(true);
         }
         let nc = this.itemsPerPage;
-        let self = this;
         return this.get_semestre_matiere_notes().then((pp: IEtudiantEvent[]) => {
-            return self.transform_data(pp);
+            return this.transform_data(pp);
         }).then((zz: IDisplayEtudiant[]) => {
-            self._all_data = zz;
-            let nt = self._all_data.length;
+            this._all_data = zz;
+			this.sort_array(this._all_data);
+            let nt = this._all_data.length;
             let np = Math.floor(nt / nc);
             if ((np * nc) < nt) {
                 ++np;
-                self.pagesCount = np;
+                this.pagesCount = np;
             }
-            return self.refresh();
+            return this.refresh();
         });
     }// refreshAll
     public refresh(): Promise<any> {

@@ -82,7 +82,7 @@ export class BaseDetailModel<T extends IPersonItem> extends BaseView {
 		this.clear_error();
 		return this.dataService.save_item(p).then((b) => {
 			if ((b !== undefined) && (b !== null) && (b == true)) {
-				this.info_message = "Item modofié!";
+				this.info_message = "Item modifié!";
 			} else {
 				this.error_message = "Erreur enregistrement...";
 			}

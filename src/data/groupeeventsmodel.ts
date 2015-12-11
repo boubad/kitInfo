@@ -776,8 +776,10 @@ export class GroupeEventsModel extends BaseEditViewModel<IGroupeEvent> {
         }
         let oRet: IEtudiantEvent[] = [];
         let affs = this.etudAffectations;
+		let selectedAffes:IEtudiantAffectation[] = [];
         for (let a of affs) {
             if (a.selected) {
+				selectedAffes.push(a);
                 let x = this.itemFactory.create_etudiantevent({
 					departementid: this.departementid,
 					departementName: this.departementName,
@@ -822,7 +824,7 @@ export class GroupeEventsModel extends BaseEditViewModel<IGroupeEvent> {
         }
         this.clear_error();
         return Promise.all(oRet).then((r) => {
-            for (let aa of oRet) {
+            for (let aa of selectedAffes) {
                 aa.selected = false;
             }
             return this.fill_notes();

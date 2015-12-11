@@ -77,7 +77,7 @@ export class GroupeEventDetailModel extends EventDetailModel<IGroupeEvent> {
 				}// e
 			}// ee
 			return true;
-		})
+		});
 	}
 	private filter_etudevents(ee: IEtudiantEvent[]): IEtudiantEvent[] {
 		let oRet: IEtudiantEvent[] = [];
