@@ -4,6 +4,7 @@ import {IEtudiantEvent} from 'infodata';
 import {SummaryItem, SummaryItemMap} from './summaryitem';
 import {BaseEtudiantSumary} from './baseetudiantsummary';
 import {EVT_NOTE} from './infoconstants';
+import {IElementDesc} from 'infodata';
 //
 //
 export class EtudiantEventsSummary extends BaseEtudiantSumary {
@@ -17,11 +18,14 @@ export class EtudiantEventsSummary extends BaseEtudiantSumary {
 		super();
 	}// constructor
 	//
-	protected post_change_semestre(): void {
+	protected set_currentSemestre(s: IElementDesc) {
+		super.set_currentSemestre(s);
+	}
+	public update_semestre() :void {
 		let semid = (this.currentSemestre !== null) ? this.currentSemestre.id : null;
 		this._allevts = this.get_semestre_all_evts(semid);
 		this._sumevts = this.get_semestre_sum_evts(semid);
-	}// post_change_semestre
+	}// update_semestre
 	//
 	public reset(): void {
 		super.reset();

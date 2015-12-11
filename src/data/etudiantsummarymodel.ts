@@ -3,8 +3,8 @@
 import {UserInfo} from './userinfo';
 import {BaseDetailModel} from './baseitemdetail';
 import {IElementDesc, IPerson, IEtudiantEvent, IUIManager, IBaseItem, IEtudiant} from 'infodata';
-import {EtudiantNotesSummary} from './notesummary';
-import {EtudiantEventsSummary} from './eventsummary';
+import {EtudiantNotesSummary} from './etudiantnotessummary';
+import {EtudiantEventsSummary} from './etudianteventssummary';
 import {SummaryItem, SummaryItemMap} from './summaryitem';
 import {EVT_NOTE} from './infoconstants';
 //
@@ -27,15 +27,21 @@ export class EtudiantSumaryModel extends BaseDetailModel<IEtudiant> {
         super(userinfo);
         this.title = "Détails Etudiant";
     }
+	protected get notesSum(): EtudiantNotesSummary {
+		if ((this._notesSum === undefined) || (this._notesSum == null)) {
+			this._notesSum = new EtudiantNotesSummary();
+		}
+		return this._notesSum;
+	}
+	protected get evtsSum(): EtudiantEventsSummary {
+		if ((this._evtsSum === undefined) || (this._evtsSum === null)) {
+			this._evtsSum = new EtudiantEventsSummary();
+		}
+		return this._evtsSum;
+	}
     public get etudiantid(): string {
-		return (this.currentPerson !== null) ? this.currentPerson.id : null;
+		return (this.currentItem !== null) ? this.currentItem.id : null;
     }
-	private get notesSum(): EtudiantNotesSummary {
-		return (this._notesSum !== undefined) ? this._notesSum : null;
-	}
-	private get evtsSum(): EtudiantEventsSummary {
-		return (this._evtsSum !== undefined) ? this._evtsSum : null;
-	}
 	public get xannees(): IElementDesc[] {
 		return ((this._xannees !== undefined) && (this._xannees !== null)) ? this._xannees : [];
 	}
@@ -46,28 +52,24 @@ export class EtudiantSumaryModel extends BaseDetailModel<IEtudiant> {
 		this._xannee = (s !== undefined) ? s : null;
 		this._xsemestres = [];
 		this._xsemestre = null;
-		if ((this._notesSum !== undefined) && (this._notesSum !== null)) {
-			this._notesSum.currentAnnee = this._xannee;
-			for (let x of this._notesSum.semestresMenu) {
+		this.notesSum.currentAnnee = this.xannee;
+		for (let x of this._notesSum.semestresMenu) {
+			this._xsemestres.push(x);
+		}
+		this.evtsSum.currentAnnee = this._xannee;
+		for (let x of this.evtsSum.semestresMenu) {
+			let bFound: boolean = false;
+			let id = x.id;
+			for (let y of this._xsemestres) {
+				if (y.id == id) {
+					bFound = true;
+					break;
+				}
+			}
+			if (!bFound) {
 				this._xsemestres.push(x);
 			}
-		}
-		if ((this._evtsSum !== undefined) && (this._xsemestres !== null)) {
-			this._evtsSum.currentAnnee = this._xannee;
-			for (let x of this._evtsSum.semestresMenu) {
-				let bFound: boolean = false;
-				let id = x.id;
-				for (let y of this._xsemestres) {
-					if (y.id == id) {
-						bFound = true;
-						break;
-					}
-				}
-				if (!bFound) {
-					this._xsemestres.push(x);
-				}
-			}// x
-		}
+		}// x
 		if (this._xsemestres.length > 0) {
 			this.xsemestre = this._xsemestres[0];
 		}
@@ -80,12 +82,11 @@ export class EtudiantSumaryModel extends BaseDetailModel<IEtudiant> {
 	}
 	public set xsemestre(s: IElementDesc) {
 		this._xsemestre = (s !== undefined) ? s : null;
-		if ((this._notesSum !== undefined) && (this._notesSum !== null)) {
-			this._notesSum.currentSemestre = this._xsemestre;
-		}
-		if ((this._evtsSum !== undefined) && (this._evtsSum !== null)) {
-			this._evtsSum.currentSemestre = this._xsemestre;
-		}
+		this.notesSum.currentSemestre = this._xsemestre;
+		this.evtsSum.currentSemestre = this._xsemestre;
+		this.notesSum.update_semestre();
+		this.evtsSum.update_semestre();
+		
 	}
 	public get devoirsNotes(): SummaryItem[] {
 		return (this.notesSum !== null) ? this.notesSum.devoirsNotes : [];

@@ -13,7 +13,8 @@ export class BaseDetailModel<T extends IInfoEvent> extends BaseView {
     constructor(userinfo: UserInfo) {
         super(userinfo);
     }
-	protected initialize_event(evtid: string): Promise<boolean> {
+
+	protected initialize_item(evtid: string): Promise<boolean> {
 		this.clear_error();
 		this._evt = null;
 		return this.dataService.find_item_by_id(evtid).then((p: T) => {
@@ -22,29 +23,29 @@ export class BaseDetailModel<T extends IInfoEvent> extends BaseView {
 		}).then((x) => {
 			return true;
 		});
-	}// initialize_groupeevent
-	public get canSave():boolean {
+	}// initialize_item
+	public get canSave(): boolean {
 		return (this.event !== null) && this.event.is_storeable();
 	}
-	public get cannotSave():boolean {
+	public get cannotSave(): boolean {
 		return (!this.canSave);
 	}
 	public save(): Promise<any> {
 		let p = this.event;
-		if (p === null){
+		if (p === null) {
 			return Promise.resolve(false);
 		}
 		if (!p.is_storeable()) {
 			return Promise.resolve(false);
 		}
 		this.clear_error();
-		return this.dataService.save_item(p).then((b)=>{
-			if ((b !== undefined) && (b !== null) && (b == true)){
+		return this.dataService.save_item(p).then((b) => {
+			if ((b !== undefined) && (b !== null) && (b == true)) {
 				this.info_message = "Item modofié!";
 			} else {
 				this.error_message = "Erreur enregistrement...";
 			}
-		}).catch((e)=>{
+		}).catch((e) => {
 			this.set_error(e);
 		})
 	}// save
@@ -82,7 +83,7 @@ export class BaseDetailModel<T extends IInfoEvent> extends BaseView {
 		return (this.event !== null) ? this.event.genre : null;
 	}
 	public set genre(s: string) {
-		if (this.event !== null){
+		if (this.event !== null) {
 			this.event.genre = s;
 		}
 	}
@@ -90,27 +91,27 @@ export class BaseDetailModel<T extends IInfoEvent> extends BaseView {
 		return (this.event !== null) ? this.event.description : null;
 	}
 	public set description(s: string) {
-		if (this.event !== null){
+		if (this.event !== null) {
 			this.event.description = s;
 		}
-	 }
-	 public get status(): string {
+	}
+	public get status(): string {
 		return (this.event !== null) ? this.event.status : null;
 	}
 	public set status(s: string) {
-		if (this.event !== null){
+		if (this.event !== null) {
 			this.event.status = s;
 		}
 	}
 	public get eventDate(): string {
-		let d:Date = null;
-		if (this.event !== null){
+		let d: Date = null;
+		if (this.event !== null) {
 			d = this.event.eventDate;
 		}
 		return this.date_to_string(d);
 	}
 	public set eventDate(s: string) {
-		if (this.event !== null){
+		if (this.event !== null) {
 			this.event.eventDate = this.string_to_date(s);
 		}
 	}
@@ -144,4 +145,16 @@ export class BaseDetailModel<T extends IInfoEvent> extends BaseView {
 	public get matiereName(): string {
 		return (this.event !== null) ? this.event.matiereName : null;
 	}
+	public activate(params?: any, config?: any, instruction?: any): any {
+		this.in_activate = true;
+		return this.perform_activate().then((xr) => {
+			let id: string = ((params.id !== undefined) && (params.id !== null)) ? params.id : null;
+			return this.initialize_item(id);
+		}).then((r) => {
+			this.in_activate = false;
+			return true;
+		}).catch((e) => {
+			return false;
+		});
+	}// activate
 }

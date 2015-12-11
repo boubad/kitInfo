@@ -26,7 +26,7 @@ export class EtudiantNotesSummary extends BaseEtudiantSumary {
 	constructor() {
 		super();
 	}// constructor
-	protected post_change_semestre(): void {
+	public update_semestre(): void {
 		let semid = (this.currentSemestre !== null) ? this.currentSemestre.id : null;
 		this._devoirNotes = this.get_devoirs_notes(semid);
 		this._matNotes = this.get_matieres_notes(semid);

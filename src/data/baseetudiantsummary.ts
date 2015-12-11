@@ -89,12 +89,17 @@ export class BaseEtudiantSumary {
 		return ((this._menuSemestres !== undefined) && (this._menuSemestres !== null)) ?
 			this._menuSemestres : [];
 	}
-	public get currentSemestre(): IElementDesc {
+	protected get_currentSemestre(): IElementDesc {
 		return (this._currentSemestre !== undefined) ? this._currentSemestre : null;
 	}
-	public set currentSemestre(s: IElementDesc) {
+	protected set_currentSemestre(s: IElementDesc) {
 		this._currentSemestre = (s !== undefined) ? s : null;
-		this.post_update_semestre();
+	}
+	public get currentSemestre(): IElementDesc {
+		return this.get_currentSemestre();
+	}
+	public set currentSemestre(s: IElementDesc) {
+		this.set_currentSemestre(s);
 	}
 	//
 	public add_events(evts: IEtudiantEvent[]): void {
